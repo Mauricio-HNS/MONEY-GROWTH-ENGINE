@@ -1,0 +1,17 @@
+"use client";
+import {useState} from "react";
+const agents=[["Rescue","Find lost money"],["Earn","Find new income"],["Save","Cut unnecessary costs"],["Debt","Reduce debt"],["Invest","Analyze investments"],["Portfolio","Watch risk"],["Business","Build new revenue"],["Assets","Monetize idle assets"],["Tax","Find legal opportunities"],["Radar","Scan everything"]];
+export default function Home(){
+ const [income,setIncome]=useState(""); const [expenses,setExpenses]=useState(""); const [debt,setDebt]=useState(""); const [scanned,setScanned]=useState(false);
+ const cash=(Number(income)||0)-(Number(expenses)||0);
+ return <main><aside><div className="logo"><b>MG</b><span>MONEY GROWTH<br/><small>ENGINE</small></span></div><nav>{["Dashboard","Money Rescue","Income","Expenses","Debt","Investments","Portfolio","Business","Assets","Tax","Radar"].map((x,i)=><button className={i===0?"active":""} key={x}>{["⌂","↺","↗","−","↓","◈","◎","◇","◆","§","⌁"][i]} {x}</button>)}</nav><div className="mission"><small>MISSION</small><strong>Improve your financial position.</strong><div className="bar"><i/></div></div></aside>
+ <section><header><div><small>PERSONAL AI WORKFORCE</small><h1>Money Growth Engine</h1><p>One simple place to find, create, protect and grow your money.</p></div><label className="online">● SYSTEM ONLINE</label></header>
+ <div className="hero"><div><small>TODAY'S COMMAND CENTER</small><h2>What can we improve?</h2><p>Enter three numbers. The AI workforce searches across your financial life.</p></div><button className="scan" onClick={()=>setScanned(true)}>Run Money Scan →</button></div>
+ <div className="inputs"><Field title="MONTHLY INCOME" value={income} setValue={setIncome}/><Field title="MONTHLY EXPENSES" value={expenses} setValue={setExpenses}/><Field title="TOTAL DEBT" value={debt} setValue={setDebt}/></div>
+ <div className="metrics"><Metric title="CASH FLOW" value={income||expenses?"€ "+cash.toLocaleString("en-US"):"—"}/><Metric title="MONEY TO FIND" value={scanned?"€ 1,240":"—"}/><Metric title="NEW INCOME" value={scanned?"€ 850/mo":"—"}/><Metric title="DEBT" value={debt?"€ "+Number(debt).toLocaleString("en-US"):"—"}/></div>
+ <div className="title"><div><small>AI WORKFORCE</small><h2>Your money team</h2></div><span>10 AGENTS</span></div><div className="agents">{agents.map(([name,desc],i)=><article key={name}><em>{String(i+1).padStart(2,"0")}</em><div className="agentIcon">{["↺","↗","−","↓","◈","◎","◇","◆","§","⌁"][i]}</div><h3>{name}</h3><p>{desc}</p><button>Open agent →</button></article>)}</div>
+ <div className="radar"><div><small>OPPORTUNITY RADAR</small><h2>{scanned?"6 opportunities found":"Your next money opportunities appear here"}</h2><p>{scanned?"Savings, income and debt actions are ready for review.":"Run a scan and let the workforce look for ways to improve your money."}</p></div><button onClick={()=>setScanned(true)}>{scanned?"View opportunities":"Scan now"} →</button></div>
+ <footer>Nothing moves, invests or executes without your explicit authorization.</footer></section></main>
+}
+function Field({title,value,setValue}:{title:string,value:string,setValue:(v:string)=>void}){return <label className="field"><small>{title}</small><div>€ <input inputMode="decimal" placeholder="0" value={value} onChange={e=>setValue(e.target.value)}/></div></label>}
+function Metric({title,value}:{title:string,value:string}){return <div className="metric"><small>{title}</small><strong>{value}</strong><span>potential / tracked</span></div>}
