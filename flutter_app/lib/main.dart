@@ -16,7 +16,7 @@ class MoneyGrowthApp extends StatelessWidget {
       title: 'Money Growth Engine',
       debugShowCheckedModeBanner: false,
       theme: AppStyle.theme(),
-      initialRoute: AppRoutes.home,
+      initialRoute: AppRoutes.splash,
       onGenerateRoute: AppRoutes.onGenerateRoute,
     );
   }
