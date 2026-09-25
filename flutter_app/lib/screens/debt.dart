@@ -66,7 +66,7 @@ class _DebtScreenState extends State<DebtScreen> {
               ])),
               const SizedBox(height: 14),
               SectionCard(title: 'Next actions', child: Column(children: [
-                ...store.debts.map((item) => ListTile(contentPadding: EdgeInsets.zero, leading: const Icon(Icons.account_balance_wallet_outlined, color: AppColors.coldBlue), title: Text(item.title), subtitle: Text('${item.interestRate.toStringAsFixed(1)}% interest · ${money(item.monthlyPayment)}/mo'), trailing: Text(money(item.balance), style: const TextStyle(fontWeight: FontWeight.w800))),
+                ...store.debts.map((item) => ListTile(contentPadding: EdgeInsets.zero, leading: const Icon(Icons.account_balance_wallet_outlined, color: AppColors.coldBlue), title: Text(item.title), subtitle: Text('${item.interestRate.toStringAsFixed(1)}% interest · ${money(item.monthlyPayment)}/mo'), trailing: Text(money(item.balance), style: const TextStyle(fontWeight: FontWeight.w800)))),
                 const Divider(),
                 Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [const Text('Monthly debt payments'), Text(money(monthlyDebtPayment), style: const TextStyle(fontWeight: FontWeight.w900, color: AppColors.coldBlue))]),
               ])),
