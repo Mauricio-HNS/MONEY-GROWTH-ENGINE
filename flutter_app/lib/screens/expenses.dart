@@ -55,7 +55,7 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
               ])),
               const SizedBox(height: 14),
               SectionCard(title: 'Expense breakdown', child: Column(children: [
-                ...store.expenses.map((item) => ListTile(contentPadding: EdgeInsets.zero, leading: Icon(item.category == 'Recurring' ? Icons.autorenew : Icons.payments_outlined, color: AppColors.laguna), title: Text(item.title), subtitle: Text(item.category), trailing: Text(money(item.amount), style: const TextStyle(fontWeight: FontWeight.w800))),
+                ...store.expenses.map((item) => ListTile(contentPadding: EdgeInsets.zero, leading: Icon(item.category == 'Recurring' ? Icons.autorenew : Icons.payments_outlined, color: AppColors.laguna), title: Text(item.title), subtitle: Text(item.category), trailing: Text(money(item.amount), style: const TextStyle(fontWeight: FontWeight.w800)))),
                 const Divider(),
                 Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [const Text('Monthly cash flow'), Text(money(cashFlow), style: TextStyle(fontWeight: FontWeight.w900, color: AppColors.coldBlue))]),
               ])),
