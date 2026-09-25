@@ -54,7 +54,7 @@ class _IncomeScreenState extends State<IncomeScreen> {
               ])),
               const SizedBox(height: 14),
               SectionCard(title: 'Current income', child: Column(children: [
-                ...store.incomes.map((item) => ListTile(contentPadding: EdgeInsets.zero, leading: const Icon(Icons.trending_up_rounded, color: AppColors.coldBlue), title: Text(item.title), subtitle: Text(item.category), trailing: Text(money(item.amount), style: const TextStyle(fontWeight: FontWeight.w800, color: AppColors.white))),
+                ...store.incomes.map((item) => ListTile(contentPadding: EdgeInsets.zero, leading: const Icon(Icons.trending_up_rounded, color: AppColors.coldBlue), title: Text(item.title), subtitle: Text(item.category), trailing: Text(money(item.amount), style: const TextStyle(fontWeight: FontWeight.w800, color: AppColors.white)))),
                 const Divider(),
                 Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [const Text('Total monthly income'), Text(money(store.totalIncome), style: const TextStyle(fontWeight: FontWeight.w900, color: AppColors.coldBlue))]),
               ])),
