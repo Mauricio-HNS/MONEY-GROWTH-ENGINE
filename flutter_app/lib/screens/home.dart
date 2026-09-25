@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../core/financial_store.dart';
 import '../routes.dart';
 import '../style/app_style.dart';
 import 'screen_shell.dart';
@@ -9,60 +10,63 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ScreenShell(
-      title: 'Money Growth',
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(22),
-            decoration: BoxDecoration(
-              gradient: const LinearGradient(colors: [AppColors.laguna, AppColors.coldBlue]),
-              borderRadius: BorderRadius.circular(22),
-            ),
-            child: const Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('MONEY GROWTH ENGINE', style: TextStyle(color: AppColors.darkKnight, fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 1.4)),
-                SizedBox(height: 10),
-                Text('What can we improve?', style: TextStyle(color: AppColors.darkKnight, fontSize: 27, fontWeight: FontWeight.w900)),
-                SizedBox(height: 6),
-                Text('Your AI workforce searches for ways to save, earn, recover and grow your money.', style: TextStyle(color: AppColors.darkKnight, fontSize: 13, height: 1.4)),
-              ],
-            ),
-          ),
-          const SizedBox(height: 16),
-          const Row(
+    return AnimatedBuilder(
+      animation: FinancialStore.instance,
+      builder: (_, __) {
+        final store = FinancialStore.instance;
+        final potential = store.recurringExpenses * 0.35 + 250;
+        return ScreenShell(
+          title: 'Money Growth',
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Expanded(child: _Metric(label: 'CASH FLOW', value: '€ 2,400')),
-              SizedBox(width: 10),
-              Expanded(child: _Metric(label: 'TO FIND', value: '€ 1,240')),
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(22),
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(colors: [AppColors.laguna, AppColors.coldBlue]),
+                  borderRadius: BorderRadius.circular(22),
+                ),
+                child: const Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('MONEY GROWTH ENGINE', style: TextStyle(color: AppColors.darkKnight, fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 1.4)),
+                    SizedBox(height: 10),
+                    Text('What can we improve?', style: TextStyle(color: AppColors.darkKnight, fontSize: 27, fontWeight: FontWeight.w900)),
+                    SizedBox(height: 6),
+                    Text('Your AI workforce searches for ways to save, earn, recover and grow your money.', style: TextStyle(color: AppColors.darkKnight, fontSize: 13, height: 1.4)),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 16),
+              Row(children: [
+                Expanded(child: _Metric(label: 'CASH FLOW', value: money(store.cashFlow))),
+                const SizedBox(width: 10),
+                Expanded(child: _Metric(label: 'TO FIND', value: money(potential))),
+              ]),
+              const SizedBox(height: 10),
+              Row(children: [
+                Expanded(child: _Metric(label: 'INCOME', value: money(store.totalIncome))),
+                const SizedBox(width: 10),
+                Expanded(child: _Metric(label: 'DEBT', value: money(store.totalDebt))),
+              ]),
+              const SizedBox(height: 22),
+              const Text('YOUR MONEY TEAM', style: TextStyle(color: AppColors.coldBlue, fontSize: 11, fontWeight: FontWeight.w800, letterSpacing: 1.4)),
+              const SizedBox(height: 12),
+              _AgentTile(icon: Icons.savings_outlined, title: 'Money Rescue', subtitle: 'Find money you are losing', route: AppRoutes.moneyRescue),
+              _AgentTile(icon: Icons.trending_up_rounded, title: 'Income', subtitle: 'Find new ways to make money', route: AppRoutes.income),
+              _AgentTile(icon: Icons.remove_circle_outline, title: 'Expenses', subtitle: 'Cut unnecessary costs', route: AppRoutes.expenses),
+              _AgentTile(icon: Icons.account_balance_wallet_outlined, title: 'Debt', subtitle: 'Build a debt reduction plan', route: AppRoutes.debt),
+              _AgentTile(icon: Icons.candlestick_chart_rounded, title: 'Investments', subtitle: 'Analyze assets and scenarios', route: AppRoutes.investments),
+              _AgentTile(icon: Icons.pie_chart_outline_rounded, title: 'Portfolio', subtitle: 'Monitor risk and allocation', route: AppRoutes.portfolio),
+              _AgentTile(icon: Icons.business_center_outlined, title: 'Business', subtitle: 'Find new revenue opportunities', route: AppRoutes.business),
+              _AgentTile(icon: Icons.inventory_2_outlined, title: 'Assets', subtitle: 'Turn idle assets into cash', route: AppRoutes.assets),
+              _AgentTile(icon: Icons.receipt_long_outlined, title: 'Tax', subtitle: 'Find legal tax opportunities', route: AppRoutes.tax),
+              _AgentTile(icon: Icons.radar_rounded, title: 'Opportunity Radar', subtitle: 'Scan your whole financial life', route: AppRoutes.radar),
             ],
           ),
-          const SizedBox(height: 10),
-          const Row(
-            children: [
-              Expanded(child: _Metric(label: 'NEW INCOME', value: '€ 850/mo')),
-              SizedBox(width: 10),
-              Expanded(child: _Metric(label: 'DEBT', value: '€ 8,400')),
-            ],
-          ),
-          const SizedBox(height: 22),
-          const Text('YOUR MONEY TEAM', style: TextStyle(color: AppColors.coldBlue, fontSize: 11, fontWeight: FontWeight.w800, letterSpacing: 1.4)),
-          const SizedBox(height: 12),
-          _AgentTile(icon: Icons.savings_outlined, title: 'Money Rescue', subtitle: 'Find money you are losing', route: AppRoutes.moneyRescue),
-          _AgentTile(icon: Icons.trending_up_rounded, title: 'Income', subtitle: 'Find new ways to make money', route: AppRoutes.income),
-          _AgentTile(icon: Icons.remove_circle_outline, title: 'Expenses', subtitle: 'Cut unnecessary costs', route: AppRoutes.expenses),
-          _AgentTile(icon: Icons.account_balance_wallet_outlined, title: 'Debt', subtitle: 'Build a debt reduction plan', route: AppRoutes.debt),
-          _AgentTile(icon: Icons.candlestick_chart_rounded, title: 'Investments', subtitle: 'Analyze assets and scenarios', route: AppRoutes.investments),
-          _AgentTile(icon: Icons.pie_chart_outline_rounded, title: 'Portfolio', subtitle: 'Monitor risk and allocation', route: AppRoutes.portfolio),
-          _AgentTile(icon: Icons.business_center_outlined, title: 'Business', subtitle: 'Find new revenue opportunities', route: AppRoutes.business),
-          _AgentTile(icon: Icons.inventory_2_outlined, title: 'Assets', subtitle: 'Turn idle assets into cash', route: AppRoutes.assets),
-          _AgentTile(icon: Icons.receipt_long_outlined, title: 'Tax', subtitle: 'Find legal tax opportunities', route: AppRoutes.tax),
-          _AgentTile(icon: Icons.radar_rounded, title: 'Opportunity Radar', subtitle: 'Scan your whole financial life', route: AppRoutes.radar),
-        ],
-      ),
+        );
+      },
     );
   }
 }
