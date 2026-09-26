@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 
 import '../routes.dart';
@@ -204,21 +206,20 @@ class _OnboardingPage extends StatelessWidget {
           children: [
             Stack(
               children: [
-                Container(
-                  width: double.infinity,
-                  height: 270,
-                  decoration: BoxDecoration(
-                    color: AppColors.surface,
-                    borderRadius: BorderRadius.circular(30),
-                    border: Border.all(color: AppColors.border),
-                  ),
-                  clipBehavior: Clip.antiAlias,
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(30),
                   child: Stack(
                     fit: StackFit.expand,
                     children: [
-                      const BrandImage(
-                        fit: BoxFit.cover,
-                        opacity: .24,
+                      const BrandImage(fit: BoxFit.cover, opacity: .18),
+                      BackdropFilter(
+                        filter: ImageFilter.blur(sigmaX: 14, sigmaY: 14),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white.withValues(alpha: .055),
+                            border: Border.all(color: Colors.white.withValues(alpha: .18)),
+                          ),
+                        ),
                       ),
                       DecoratedBox(
                         decoration: BoxDecoration(
@@ -248,20 +249,27 @@ class _OnboardingPage extends StatelessWidget {
                       Positioned(
                         right: 24,
                         bottom: 24,
-                        child: Container(
-                          width: 82,
-                          height: 82,
-                          decoration: BoxDecoration(
-                            color: Colors.white.withValues(alpha: .10),
-                            borderRadius: BorderRadius.circular(24),
-                            border: Border.all(
-                              color: Colors.white.withValues(alpha: .22),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(24),
+                          child: BackdropFilter(
+                            filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
+                            child: Container(
+                              width: 82,
+                              height: 82,
+                              decoration: BoxDecoration(
+                                color: Colors.white.withValues(alpha: .11),
+                                borderRadius: BorderRadius.circular(24),
+                                border: Border.all(color: Colors.white.withValues(alpha: .30)),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withValues(alpha: .28),
+                                    blurRadius: 24,
+                                    offset: const Offset(0, 12),
+                                  ),
+                                ],
+                              ),
+                              child: Icon(data.icon, color: Colors.white, size: 40),
                             ),
-                          ),
-                          child: Icon(
-                            data.icon,
-                            color: Colors.white,
-                            size: 40,
                           ),
                         ),
                       ),
@@ -283,13 +291,27 @@ class _OnboardingPage extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 28),
-            const Text(
-              'YOUR FINANCIAL COMMAND CENTER',
-              style: TextStyle(
-                color: AppColors.red,
-                fontSize: 10,
-                fontWeight: FontWeight.w900,
-                letterSpacing: 2.1,
+            ClipRRect(
+              borderRadius: BorderRadius.circular(999),
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 7),
+                  decoration: BoxDecoration(
+                    color: AppColors.red.withValues(alpha: .12),
+                    borderRadius: BorderRadius.circular(999),
+                    border: Border.all(color: AppColors.red.withValues(alpha: .35)),
+                  ),
+                  child: const Text(
+                    'YOUR FINANCIAL COMMAND CENTER',
+                    style: TextStyle(
+                      color: AppColors.red,
+                      fontSize: 10,
+                      fontWeight: FontWeight.w900,
+                      letterSpacing: 2.1,
+                    ),
+                  ),
+                ),
               ),
             ),
             const SizedBox(height: 10),
