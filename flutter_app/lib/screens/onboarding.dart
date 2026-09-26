@@ -216,147 +216,101 @@ class _OnboardingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AnimatedOpacity(
-      duration: const Duration(milliseconds: 250),
-      opacity: active ? 1 : .78,
+      duration: const Duration(milliseconds: 300),
+      opacity: active ? 1 : .55,
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(24, 18, 24, 16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _GlassHero(data: data),
-            const SizedBox(height: 28),
-            ClipRRect(
-              borderRadius: BorderRadius.circular(999),
-              child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 13,
-                    vertical: 7,
-                  ),
-                  decoration: BoxDecoration(
-                    color: AppColors.red.withValues(alpha: .12),
-                    borderRadius: BorderRadius.circular(999),
-                    border: Border.all(
-                      color: AppColors.red.withValues(alpha: .35),
-                    ),
-                  ),
-                  child: const Text(
-                    'YOUR FINANCIAL COMMAND CENTER',
-                    style: TextStyle(
-                      color: AppColors.red,
-                      fontSize: 10,
-                      fontWeight: FontWeight.w900,
-                      letterSpacing: 2.1,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(height: 10),
-            Text(
-              data.title,
-              style: const TextStyle(
-                color: AppColors.white,
-                fontSize: 34,
-                height: .94,
-                fontWeight: FontWeight.w900,
-                letterSpacing: -1.8,
-              ),
-            ),
-            const SizedBox(height: 14),
-            Text(
-              data.text,
-              style: const TextStyle(
-                color: AppColors.textMuted,
-                fontSize: 15,
-                height: 1.5,
-              ),
-            ),
-            const SizedBox(height: 8),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _GlassHero extends StatelessWidget {
-  const _GlassHero({required this.data});
-
-  final _OnboardingData data;
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      height: 270,
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(30),
-        child: Stack(
-          fit: StackFit.expand,
-          children: [
-            const BrandImage(fit: BoxFit.cover, opacity: .22),
-            // The frosted look lives entirely in this one layer: blur the
-            // backdrop, then tint it with a translucent red-to-black
-            // gradient and a hairline edge. Keeping the tint translucent
-            // (rather than near-opaque) is what lets the blur actually
-            // read as glass instead of just a flat gradient panel.
-            BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 18, sigmaY: 18),
-              child: Container(
+        padding: const EdgeInsets.fromLTRB(22, 12, 22, 12),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(28),
+          child: Stack(
+            fit: StackFit.expand,
+            children: [
+              const BrandImage(fit: BoxFit.cover),
+              DecoratedBox(
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    stops: const [0, .42, .68, 1],
                     colors: [
-                      AppColors.red.withValues(alpha: .32),
-                      AppColors.black.withValues(alpha: .58),
+                      Colors.black.withValues(alpha: .10),
+                      Colors.black.withValues(alpha: .18),
+                      AppColors.black.withValues(alpha: .70),
+                      AppColors.black.withValues(alpha: .98),
                     ],
                   ),
-                  border: Border.all(
-                    color: Colors.white.withValues(alpha: .16),
+                ),
+              ),
+              Positioned(
+                top: 22,
+                left: 22,
+                child: Text(
+                  data.number,
+                  style: const TextStyle(
+                    color: AppColors.white,
+                    fontSize: 13,
+                    fontWeight: FontWeight.w900,
+                    letterSpacing: 3,
                   ),
                 ),
               ),
-            ),
-            Positioned(
-              left: 24,
-              top: 24,
-              child: Text(
-                data.number,
-                style: const TextStyle(
-                  color: AppColors.white,
-                  fontSize: 12,
-                  fontWeight: FontWeight.w900,
-                  letterSpacing: 2.5,
-                ),
-              ),
-            ),
-            Positioned(
-              left: 24,
-              bottom: 24,
-              child: Row(
-                children: [
-                  Container(
-                    width: 34,
-                    height: 2,
+              Positioned(
+                top: 23,
+                right: 22,
+                child: Container(
+                  width: 8,
+                  height: 8,
+                  decoration: const BoxDecoration(
                     color: AppColors.red,
+                    shape: BoxShape.circle,
                   ),
-                  const SizedBox(width: 10),
-                  Text(
-                    data.title,
-                    style: const TextStyle(
-                      color: AppColors.white,
-                      fontSize: 10,
-                      fontWeight: FontWeight.w900,
-                      letterSpacing: 2.2,
-                    ),
-                  ),
-                ],
+                ),
               ),
-            ),
-          ],
+              Positioned(
+                left: 24,
+                right: 24,
+                bottom: 28,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'MONEY GROWTH ENGINE',
+                      style: TextStyle(
+                        color: AppColors.white.withValues(alpha: .70),
+                        fontSize: 9,
+                        fontWeight: FontWeight.w900,
+                        letterSpacing: 2.4,
+                      ),
+                    ),
+                    const SizedBox(height: 9),
+                    Text(
+                      data.title,
+                      style: const TextStyle(
+                        color: AppColors.white,
+                        fontSize: 42,
+                        height: .90,
+                        fontWeight: FontWeight.w900,
+                        letterSpacing: -2.2,
+                      ),
+                    ),
+                    const SizedBox(height: 13),
+                    ConstrainedBox(
+                      constraints: const BoxConstraints(maxWidth: 430),
+                      child: Text(
+                        data.text,
+                        style: const TextStyle(
+                          color: Color(0xFFE8E4E5),
+                          fontSize: 15,
+                          height: 1.45,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
