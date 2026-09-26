@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../core/financial_store.dart';
 import '../routes.dart';
 import '../style/app_style.dart';
+import '../style/brand.dart';
 import 'screen_shell.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -20,6 +21,14 @@ class HomeScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Row(
+                children: [
+                  const BrandMark(size: 44, borderRadius: 13),
+                  const SizedBox(width: 12),
+                  const Text(BrandAssets.appName, style: TextStyle(color: AppColors.white, fontSize: 13, fontWeight: FontWeight.w900, letterSpacing: 1.3)),
+                ],
+              ),
+              const SizedBox(height: 16),
               Container(
                 width: double.infinity,
                 padding: const EdgeInsets.all(22),
