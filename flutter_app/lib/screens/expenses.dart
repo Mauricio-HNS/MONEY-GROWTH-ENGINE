@@ -62,7 +62,7 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
                         controller: title,
                         decoration: const InputDecoration(
                           labelText: 'Expense',
-                          prefixIcon: Icon(Icons.receipt_long_outlined),
+                          prefixIcon: AppIconBadge(icon: Icons.receipt_long_outlined),
                         ),
                       ),
                       const SizedBox(height: 12),
@@ -71,7 +71,7 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
                         keyboardType: const TextInputType.numberWithOptions(decimal: true),
                         decoration: const InputDecoration(
                           labelText: 'Monthly amount',
-                          prefixIcon: Icon(Icons.euro_rounded),
+                          prefixIcon: AppIconBadge(icon: Icons.euro_rounded),
                         ),
                       ),
                       const SizedBox(height: 12),
@@ -105,7 +105,7 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
                       ...store.expenses.map(
                         (item) => ListTile(
                           contentPadding: EdgeInsets.zero,
-                          leading: Icon(
+                          leading: AppIconBadge(icon: 
                             item.category == 'Recurring'
                                 ? Icons.autorenew
                                 : Icons.payments_outlined,
