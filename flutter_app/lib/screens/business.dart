@@ -22,7 +22,7 @@ class _BusinessScreenState extends State<BusinessScreen> {
     SectionCard(title: 'Business Growth', child: Text('Track business ideas, services, clients and revenue opportunities.', style: TextStyle(color: AppColors.textMuted))),
     const SizedBox(height: 14),
     SectionCard(title: 'Add opportunity', child: Column(children: [
-      TextField(controller: name, decoration: const InputDecoration(labelText: 'Opportunity name', prefixIcon: Icon(Icons.business_center_outlined))),
+      TextField(controller: name, decoration: const InputDecoration(labelText: 'Opportunity name', prefixIcon: AppIconBadge(icon: Icons.business_center_outlined))),
       const SizedBox(height: 10),
       TextField(controller: monthly, keyboardType: const TextInputType.numberWithOptions(decimal: true), decoration: const InputDecoration(labelText: 'Expected monthly revenue', prefixText: '€ ')),
       const SizedBox(height: 12),
