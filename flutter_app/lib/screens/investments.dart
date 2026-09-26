@@ -29,7 +29,7 @@ class _InvestmentsScreenState extends State<InvestmentsScreen> {
     SectionCard(title: 'Add investment', child: Column(children: [
       TextField(controller: name, decoration: const InputDecoration(labelText: 'Investment name', prefixIcon: AppIconBadge(icon: Icons.show_chart))),
       const SizedBox(height: 10),
-      DropdownButtonFormField<String>(value: type, decoration: const InputDecoration(labelText: 'Type'), items: const ['ETF','Stock','Fund','Bond','Crypto','Other'].map((e) => DropdownMenuItem(value:e, child:Text(e))).toList(), onChanged:(v)=>setState(()=>type=v!)),
+      DropdownButtonFormField<String>(initialValue: type, decoration: const InputDecoration(labelText: 'Type'), items: const ['ETF','Stock','Fund','Bond','Crypto','Other'].map((e) => DropdownMenuItem(value:e, child:Text(e))).toList(), onChanged:(v)=>setState(()=>type=v!)),
       const SizedBox(height: 10),
       TextField(controller: amount, keyboardType: const TextInputType.numberWithOptions(decimal:true), decoration: const InputDecoration(labelText: 'Amount')),
       const SizedBox(height: 12), SizedBox(width:double.infinity, child:FilledButton(onPressed:add, child:const Text('Add investment'))),
