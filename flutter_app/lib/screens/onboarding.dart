@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../routes.dart';
 import '../style/app_style.dart';
+import '../style/brand.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
@@ -80,8 +81,47 @@ class _OnboardingPage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(width: 118, height: 118, decoration: BoxDecoration(color: AppColors.surface, borderRadius: BorderRadius.circular(36), border: Border.all(color: AppColors.border)), child: Icon(icon, size: 58, color: AppColors.laguna)),
-            const SizedBox(height: 42),
+            Container(
+              width: 220,
+              height: 150,
+              decoration: BoxDecoration(
+                color: AppColors.surface,
+                borderRadius: BorderRadius.circular(28),
+                border: Border.all(color: AppColors.border),
+              ),
+              clipBehavior: Clip.antiAlias,
+              child: Stack(
+                fit: StackFit.expand,
+                children: [
+                  const BrandImage(fit: BoxFit.cover, opacity: .82),
+                  Align(
+                    alignment: Alignment.bottomRight,
+                    child: Container(
+                      width: 62,
+                      height: 62,
+                      margin: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: AppColors.darkKnight.withValues(alpha: .92),
+                        borderRadius: BorderRadius.circular(18),
+                      ),
+                      child: Icon(icon, size: 30, color: AppColors.laguna),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 34),
+            const Text(
+              BrandAssets.appName,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: AppColors.coldBlue,
+                fontSize: 11,
+                fontWeight: FontWeight.w900,
+                letterSpacing: 2.2,
+              ),
+            ),
+            const SizedBox(height: 12),
             Text(title, textAlign: TextAlign.center, style: const TextStyle(color: AppColors.white, fontSize: 29, fontWeight: FontWeight.w900)),
             const SizedBox(height: 16),
             Text(text, textAlign: TextAlign.center, style: const TextStyle(color: AppColors.textMuted, fontSize: 15, height: 1.5)),
