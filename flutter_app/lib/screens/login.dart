@@ -41,9 +41,9 @@ class _LoginScreenState extends State<LoginScreen> {
         TextFormField(controller: email, keyboardType: TextInputType.emailAddress, validator: (value) {
           final text = value?.trim() ?? '';
           return RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$').hasMatch(text) ? null : 'Enter a valid email';
-        }, style: const TextStyle(color: AppColors.white), decoration: const InputDecoration(labelText: 'Email', prefixIcon: Icon(Icons.email_outlined))),
+        }, style: const TextStyle(color: AppColors.white), decoration: const InputDecoration(labelText: 'Email', prefixIcon: AppIconBadge(icon: Icons.email_outlined))),
         const SizedBox(height: 14),
-        TextFormField(controller: password, obscureText: obscure, validator: (value) => (value ?? '').isEmpty ? 'Enter your password' : null, style: const TextStyle(color: AppColors.white), decoration: InputDecoration(labelText: 'Password', prefixIcon: const Icon(Icons.lock_outline), suffixIcon: IconButton(onPressed: () => setState(() => obscure = !obscure), icon: Icon(obscure ? Icons.visibility_outlined : Icons.visibility_off_outlined)))),
+        TextFormField(controller: password, obscureText: obscure, validator: (value) => (value ?? '').isEmpty ? 'Enter your password' : null, style: const TextStyle(color: AppColors.white), decoration: InputDecoration(labelText: 'Password', prefixIcon: const AppIconBadge(icon: Icons.lock_outline), suffixIcon: IconButton(onPressed: () => setState(() => obscure = !obscure), icon: Icon(obscure ? Icons.visibility_outlined : Icons.visibility_off_outlined)))),
         Align(alignment: Alignment.centerRight, child: TextButton(onPressed: () => Navigator.pushNamed(context, AppRoutes.forgotPassword), child: const Text('Forgot password?'))),
         const SizedBox(height: 10),
         SizedBox(width: double.infinity, height: 54, child: FilledButton.icon(onPressed: submit, icon: const Icon(Icons.login_rounded), label: const Text('SIGN IN'))),
