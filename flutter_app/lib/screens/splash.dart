@@ -148,6 +148,7 @@ class _SplashData {
 
 class _EditorialSlide extends StatelessWidget {
   const _EditorialSlide({
+    super.key,
     required this.data,
     required this.page,
     required this.total,
@@ -338,6 +339,7 @@ class _EditorialSlide extends StatelessWidget {
 
 class HeroPhoto extends StatelessWidget {
   const HeroPhoto({
+    super.key,
     required this.url,
     required this.background,
   });
