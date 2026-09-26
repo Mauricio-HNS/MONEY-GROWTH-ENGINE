@@ -255,7 +255,6 @@ class _OnboardingPage extends StatelessWidget {
               ),
               const SizedBox(height: 8),
             ],
-          ),
         ),
       ),
     );
