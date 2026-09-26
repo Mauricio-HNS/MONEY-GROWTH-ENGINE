@@ -57,26 +57,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
     FocusScope.of(context).requestFocus(node);
   }
 
-  void insertAt() {
-    final value = email.value;
-    final selection = value.selection.isValid
-        ? value.selection
-        : TextSelection.collapsed(offset: value.text.length);
-
-    final start = selection.start.clamp(0, value.text.length);
-    final end = selection.end.clamp(0, value.text.length);
-    final nextText = value.text.replaceRange(start, end, '@');
-    final nextOffset = start + 1;
-
-    email.value = value.copyWith(
-      text: nextText,
-      selection: TextSelection.collapsed(offset: nextOffset),
-      composing: TextRange.empty,
-    );
-
-    moveFocus(emailFocus);
-  }
-
   String? validateEmail(String? value) {
     final text = value?.trim() ?? '';
 
@@ -176,25 +156,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
               enableSuggestions: false,
               validator: validateEmail,
               onSubmitted: (_) => moveFocus(passwordFocus),
-              suffix: TextButton(
-                onPressed: insertAt,
-                style: TextButton.styleFrom(
-                  foregroundColor: AppColors.white,
-                  backgroundColor: AppColors.red,
-                  minimumSize: const Size(46, 38),
-                  padding: const EdgeInsets.symmetric(horizontal: 12),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-                child: const Text(
-                  '@',
-                  style: TextStyle(
-                    fontSize: 17,
-                    fontWeight: FontWeight.w900,
-                  ),
-                ),
-              ),
             ),
             const SizedBox(height: 12),
             _passwordField(
@@ -237,7 +198,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ),
             const SizedBox(height: 14),
             const Text(
-              'Your name accepts accents. Email accepts normal keyboard input and the @ shortcut.',
+              'Your name accepts accents. Use a standard email address, for example: name@example.com.',
               style: TextStyle(
                 color: AppColors.textMuted,
                 fontSize: 11,
