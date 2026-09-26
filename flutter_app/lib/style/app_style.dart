@@ -11,6 +11,10 @@ abstract final class AppColors {
   static const textMuted = Color(0xFFB9AEB0);
   static const border = Color(0xFF4A292D);
   static const accent = red;
+  // Backward-compatible aliases used by existing screens.
+  static const coldBlue = white;
+  static const laguna = red;
+  static const darkKnight = black;
   static const success = Color(0xFF65D98B);
 }
 
