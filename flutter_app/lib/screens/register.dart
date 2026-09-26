@@ -64,9 +64,72 @@ class _RegisterScreenState extends State<RegisterScreen> {
     ),
   );
 
-  Widget _field(String label, TextEditingController controller, IconData icon, {TextInputType? keyboardType, String? Function(String?)? validator}) =>
-      TextFormField(controller: controller, keyboardType: keyboardType, validator: validator, style: const TextStyle(color: AppColors.white), textInputAction: TextInputAction.next, decoration: InputDecoration(labelText: label, prefixIcon: AppIconBadge(icon: icon)));
+  Widget _field(
+    String label,
+    TextEditingController controller,
+    IconData icon, {
+    TextInputType? keyboardType,
+    String? Function(String?)? validator,
+  }) =>
+      TextFormField(
+        controller: controller,
+        keyboardType: keyboardType,
+        validator: validator,
+        style: const TextStyle(
+          color: AppColors.white,
+          fontSize: 16,
+          height: 1.2,
+        ),
+        cursorColor: AppColors.red,
+        textCapitalization: label == 'Email'
+            ? TextCapitalization.none
+            : TextCapitalization.words,
+        autocorrect: label != 'Email',
+        enableSuggestions: label != 'Email',
+        textInputAction: TextInputAction.next,
+        decoration: InputDecoration(
+          labelText: label,
+          prefixIcon: AppIconBadge(icon: icon),
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 16,
+            vertical: 16,
+          ),
+        ),
+      );
 
-  Widget _passwordField(String label, TextEditingController controller, bool obscure, VoidCallback toggle, {String? Function(String?)? validator}) =>
-      TextFormField(controller: controller, obscureText: obscure, validator: validator, style: const TextStyle(color: AppColors.white), textInputAction: TextInputAction.next, decoration: InputDecoration(labelText: label, prefixIcon: const AppIconBadge(icon: Icons.lock_outline), suffixIcon: IconButton(onPressed: toggle, icon: Icon(obscure ? Icons.visibility_outlined : Icons.visibility_off_outlined))));
+  Widget _passwordField(
+    String label,
+    TextEditingController controller,
+    bool obscure,
+    VoidCallback toggle, {
+    String? Function(String?)? validator,
+  }) =>
+      TextFormField(
+        controller: controller,
+        obscureText: obscure,
+        validator: validator,
+        style: const TextStyle(
+          color: AppColors.white,
+          fontSize: 16,
+          height: 1.2,
+        ),
+        cursorColor: AppColors.red,
+        textInputAction: TextInputAction.next,
+        decoration: InputDecoration(
+          labelText: label,
+          prefixIcon: const AppIconBadge(icon: Icons.lock_outline),
+          suffixIcon: IconButton(
+            onPressed: toggle,
+            icon: Icon(
+              obscure
+                  ? Icons.visibility_outlined
+                  : Icons.visibility_off_outlined,
+            ),
+          ),
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 16,
+            vertical: 16,
+          ),
+        ),
+      );
 }
