@@ -35,6 +35,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) => ScreenShell(
     title: 'Create account',
+    showRadar: false,
     child: Form(
       key: formKey,
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
