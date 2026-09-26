@@ -206,9 +206,12 @@ class _OnboardingPage extends StatelessWidget {
           children: [
             Stack(
               children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(30),
-                  child: Stack(
+                SizedBox(
+                  width: double.infinity,
+                  height: 270,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(30),
+                    child: Stack(
                     fit: StackFit.expand,
                     children: [
                       const BrandImage(fit: BoxFit.cover, opacity: .18),
@@ -286,6 +289,7 @@ class _OnboardingPage extends StatelessWidget {
                         ),
                       ),
                     ],
+                    ),
                   ),
                 ),
               ],
