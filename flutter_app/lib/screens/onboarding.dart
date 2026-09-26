@@ -198,74 +198,66 @@ class _OnboardingPage extends StatelessWidget {
     return AnimatedOpacity(
       duration: const Duration(milliseconds: 250),
       opacity: active ? 1 : .78,
-      child: LayoutBuilder(
-        builder: (context, constraints) {
-          return SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
-            padding: const EdgeInsets.fromLTRB(24, 18, 24, 16),
-            child: ConstrainedBox(
-              constraints: BoxConstraints(
-                minHeight: constraints.maxHeight - 34,
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _GlassHero(data: data),
-                  const SizedBox(height: 28),
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(999),
-                    child: BackdropFilter(
-                      filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 13,
-                          vertical: 7,
-                        ),
-                        decoration: BoxDecoration(
-                          color: AppColors.red.withValues(alpha: .12),
-                          borderRadius: BorderRadius.circular(999),
-                          border: Border.all(
-                            color: AppColors.red.withValues(alpha: .35),
-                          ),
-                        ),
-                        child: const Text(
-                          'YOUR FINANCIAL COMMAND CENTER',
-                          style: TextStyle(
-                            color: AppColors.red,
-                            fontSize: 10,
-                            fontWeight: FontWeight.w900,
-                            letterSpacing: 2.1,
-                          ),
-                        ),
+      child: SizedBox.expand(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(24, 18, 24, 16),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _GlassHero(data: data),
+              const SizedBox(height: 28),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(999),
+                child: BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 13,
+                      vertical: 7,
+                    ),
+                    decoration: BoxDecoration(
+                      color: AppColors.red.withValues(alpha: .12),
+                      borderRadius: BorderRadius.circular(999),
+                      border: Border.all(
+                        color: AppColors.red.withValues(alpha: .35),
+                      ),
+                    ),
+                    child: const Text(
+                      'YOUR FINANCIAL COMMAND CENTER',
+                      style: TextStyle(
+                        color: AppColors.red,
+                        fontSize: 10,
+                        fontWeight: FontWeight.w900,
+                        letterSpacing: 2.1,
                       ),
                     ),
                   ),
-                  const SizedBox(height: 10),
-                  Text(
-                    data.title,
-                    style: const TextStyle(
-                      color: AppColors.white,
-                      fontSize: 34,
-                      height: .94,
-                      fontWeight: FontWeight.w900,
-                      letterSpacing: -1.8,
-                    ),
-                  ),
-                  const SizedBox(height: 14),
-                  Text(
-                    data.text,
-                    style: const TextStyle(
-                      color: AppColors.textMuted,
-                      fontSize: 15,
-                      height: 1.5,
-                    ),
-                  ),
-                ],
+                ),
               ),
-            ),
-          );
-        },
+              const SizedBox(height: 10),
+              Text(
+                data.title,
+                style: const TextStyle(
+                  color: AppColors.white,
+                  fontSize: 34,
+                  height: .94,
+                  fontWeight: FontWeight.w900,
+                  letterSpacing: -1.8,
+                ),
+              ),
+              const SizedBox(height: 14),
+              Text(
+                data.text,
+                style: const TextStyle(
+                  color: AppColors.textMuted,
+                  fontSize: 15,
+                  height: 1.5,
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
