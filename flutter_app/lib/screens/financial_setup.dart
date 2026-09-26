@@ -98,7 +98,7 @@ class _FinancialSetupScreenState extends State<FinancialSetupScreen> {
   );
 
   Widget _progress() => Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-    Text('STEP ' + (page + 1).toString() + ' OF 3', style: const TextStyle(color: AppColors.red, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2.2)),
+    Text('STEP ${page + 1} OF 3', style: const TextStyle(color: AppColors.red, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2.2)),
     const SizedBox(height: 8),
     Row(children: List.generate(3, (index) => Expanded(child: Container(height: 4, margin: EdgeInsets.only(right: index == 2 ? 0 : 6), decoration: BoxDecoration(color: index <= page ? AppColors.red : AppColors.border, borderRadius: BorderRadius.circular(99)))))),
   ]);
@@ -175,7 +175,7 @@ class _FinancialSetupScreenState extends State<FinancialSetupScreen> {
         child: Row(children: [
           const Icon(Icons.auto_awesome_rounded, color: AppColors.red),
           const SizedBox(width: 12),
-          Expanded(child: Text('Your dashboard will be built around “' + objective + '”.', style: const TextStyle(color: AppColors.textMuted, fontSize: 13, height: 1.4))),
+          Expanded(child: Text('Your dashboard will be built around “$objective”.', style: const TextStyle(color: AppColors.textMuted, fontSize: 13, height: 1.4))),
         ]),
       ),
     ],
