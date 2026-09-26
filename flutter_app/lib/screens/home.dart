@@ -69,7 +69,7 @@ class HomeScreen extends StatelessWidget {
                 SectionCard(
                   title: 'Primary mission',
                   child: Row(children: [
-                    const Icon(Icons.flag_rounded, color: AppColors.red),
+                    const AppIconBadge(icon: Icons.flag_rounded, size: 38, radius: 11),
                     const SizedBox(width: 12),
                     Expanded(child: Text(store.objective, style: const TextStyle(color: AppColors.white, fontSize: 16, fontWeight: FontWeight.w800))),
                   ]),
