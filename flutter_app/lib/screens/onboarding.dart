@@ -198,11 +198,11 @@ class _OnboardingPage extends StatelessWidget {
     return AnimatedOpacity(
       duration: const Duration(milliseconds: 250),
       opacity: active ? 1 : .78,
-      child: SizedBox.expand(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(24, 18, 24, 16),
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(24, 18, 24, 16),
+        child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _GlassHero(data: data),
@@ -255,6 +255,7 @@ class _OnboardingPage extends StatelessWidget {
                   height: 1.5,
                 ),
               ),
+              const SizedBox(height: 8),
             ],
           ),
         ),
