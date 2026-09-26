@@ -64,107 +64,127 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
     return Scaffold(
       backgroundColor: AppColors.black,
-      body: SafeArea(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(22, 14, 22, 0),
-              child: Row(
-                children: [
-                  const BrandMark(size: 46, borderRadius: 14),
-                  const SizedBox(width: 12),
-                  const Expanded(
-                    child: Text(
-                      BrandAssets.appName,
-                      style: TextStyle(
-                        color: AppColors.white,
-                        fontSize: 10,
-                        fontWeight: FontWeight.w900,
-                        letterSpacing: 1.8,
-                      ),
-                    ),
-                  ),
-                  TextButton(
-                    onPressed: () => Navigator.pushReplacementNamed(
-                      context,
-                      AppRoutes.login,
-                    ),
-                    child: const Text(
-                      'ENTRAR',
-                      style: TextStyle(
-                        fontSize: 10,
-                        fontWeight: FontWeight.w900,
-                        letterSpacing: 1.4,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Expanded(
-              child: PageView.builder(
-                controller: _controller,
-                itemCount: _pages.length,
-                onPageChanged: (value) => setState(() => _page = value),
-                itemBuilder: (_, index) => _OnboardingPage(
-                  data: _pages[index],
-                  active: index == _page,
+      body: Stack(
+        children: [
+          // Subtle ambient glow tying the screen to the brand's red,
+          // without covering or tinting any of the content on top of it.
+          Positioned.fill(
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                gradient: RadialGradient(
+                  center: const Alignment(0, -0.65),
+                  radius: 1.1,
+                  colors: [
+                    AppColors.red.withValues(alpha: .16),
+                    AppColors.black.withValues(alpha: 0),
+                  ],
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(22, 0, 22, 24),
-              child: Column(
-                children: [
-                  Row(
-                    children: List.generate(
-                      _pages.length,
-                      (index) => Expanded(
-                        child: AnimatedContainer(
-                          duration: const Duration(milliseconds: 260),
-                          height: 5,
-                          margin: EdgeInsets.only(
-                            right: index == _pages.length - 1 ? 0 : 6,
-                          ),
-                          decoration: BoxDecoration(
-                            color: index == _page
-                                ? AppColors.red
-                                : AppColors.border,
-                            borderRadius: BorderRadius.circular(20),
+          ),
+          SafeArea(
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(22, 14, 22, 0),
+                  child: Row(
+                    children: [
+                      const BrandMark(size: 46, borderRadius: 14),
+                      const SizedBox(width: 12),
+                      const Expanded(
+                        child: Text(
+                          BrandAssets.appName,
+                          style: TextStyle(
+                            color: AppColors.white,
+                            fontSize: 10,
+                            fontWeight: FontWeight.w900,
+                            letterSpacing: 1.8,
                           ),
                         ),
                       ),
-                    ),
-                  ),
-                  const SizedBox(height: 18),
-                  SizedBox(
-                    width: double.infinity,
-                    height: 56,
-                    child: FilledButton(
-                      onPressed: _continue,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(last ? 'CRIAR MINHA CONTA' : 'CONTINUAR'),
-                          const SizedBox(width: 10),
-                          const Icon(Icons.arrow_forward_rounded, size: 18),
-                        ],
+                      TextButton(
+                        onPressed: () => Navigator.pushReplacementNamed(
+                          context,
+                          AppRoutes.login,
+                        ),
+                        child: const Text(
+                          'ENTRAR',
+                          style: TextStyle(
+                            fontSize: 10,
+                            fontWeight: FontWeight.w900,
+                            letterSpacing: 1.4,
+                          ),
+                        ),
                       ),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: PageView.builder(
+                    controller: _controller,
+                    itemCount: _pages.length,
+                    onPageChanged: (value) => setState(() => _page = value),
+                    itemBuilder: (_, index) => _OnboardingPage(
+                      data: _pages[index],
+                      active: index == _page,
                     ),
                   ),
-                  const SizedBox(height: 8),
-                  TextButton(
-                    onPressed: () => Navigator.pushReplacementNamed(
-                      context,
-                      AppRoutes.login,
-                    ),
-                    child: const Text('Já tenho uma conta'),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(22, 0, 22, 24),
+                  child: Column(
+                    children: [
+                      Row(
+                        children: List.generate(
+                          _pages.length,
+                          (index) => Expanded(
+                            child: AnimatedContainer(
+                              duration: const Duration(milliseconds: 260),
+                              height: 5,
+                              margin: EdgeInsets.only(
+                                right: index == _pages.length - 1 ? 0 : 6,
+                              ),
+                              decoration: BoxDecoration(
+                                color: index == _page
+                                    ? AppColors.red
+                                    : AppColors.border,
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 18),
+                      SizedBox(
+                        width: double.infinity,
+                        height: 56,
+                        child: FilledButton(
+                          onPressed: _continue,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(last ? 'CRIAR MINHA CONTA' : 'CONTINUAR'),
+                              const SizedBox(width: 10),
+                              const Icon(Icons.arrow_forward_rounded, size: 18),
+                            ],
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      TextButton(
+                        onPressed: () => Navigator.pushReplacementNamed(
+                          context,
+                          AppRoutes.login,
+                        ),
+                        child: const Text('Já tenho uma conta'),
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -203,58 +223,58 @@ class _OnboardingPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-              _GlassHero(data: data),
-              const SizedBox(height: 28),
-              ClipRRect(
-                borderRadius: BorderRadius.circular(999),
-                child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 13,
-                      vertical: 7,
+            _GlassHero(data: data),
+            const SizedBox(height: 28),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(999),
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 13,
+                    vertical: 7,
+                  ),
+                  decoration: BoxDecoration(
+                    color: AppColors.red.withValues(alpha: .12),
+                    borderRadius: BorderRadius.circular(999),
+                    border: Border.all(
+                      color: AppColors.red.withValues(alpha: .35),
                     ),
-                    decoration: BoxDecoration(
-                      color: AppColors.red.withValues(alpha: .12),
-                      borderRadius: BorderRadius.circular(999),
-                      border: Border.all(
-                        color: AppColors.red.withValues(alpha: .35),
-                      ),
-                    ),
-                    child: const Text(
-                      'YOUR FINANCIAL COMMAND CENTER',
-                      style: TextStyle(
-                        color: AppColors.red,
-                        fontSize: 10,
-                        fontWeight: FontWeight.w900,
-                        letterSpacing: 2.1,
-                      ),
+                  ),
+                  child: const Text(
+                    'YOUR FINANCIAL COMMAND CENTER',
+                    style: TextStyle(
+                      color: AppColors.red,
+                      fontSize: 10,
+                      fontWeight: FontWeight.w900,
+                      letterSpacing: 2.1,
                     ),
                   ),
                 ),
               ),
-              const SizedBox(height: 10),
-              Text(
-                data.title,
-                style: const TextStyle(
-                  color: AppColors.white,
-                  fontSize: 34,
-                  height: .94,
-                  fontWeight: FontWeight.w900,
-                  letterSpacing: -1.8,
-                ),
+            ),
+            const SizedBox(height: 10),
+            Text(
+              data.title,
+              style: const TextStyle(
+                color: AppColors.white,
+                fontSize: 34,
+                height: .94,
+                fontWeight: FontWeight.w900,
+                letterSpacing: -1.8,
               ),
-              const SizedBox(height: 14),
-              Text(
-                data.text,
-                style: const TextStyle(
-                  color: AppColors.textMuted,
-                  fontSize: 15,
-                  height: 1.5,
-                ),
+            ),
+            const SizedBox(height: 14),
+            Text(
+              data.text,
+              style: const TextStyle(
+                color: AppColors.textMuted,
+                fontSize: 15,
+                height: 1.5,
               ),
-              const SizedBox(height: 8),
-            ],
+            ),
+            const SizedBox(height: 8),
+          ],
         ),
       ),
     );
@@ -276,27 +296,27 @@ class _GlassHero extends StatelessWidget {
         child: Stack(
           fit: StackFit.expand,
           children: [
-            const BrandImage(fit: BoxFit.cover, opacity: .18),
+            const BrandImage(fit: BoxFit.cover, opacity: .22),
+            // The frosted look lives entirely in this one layer: blur the
+            // backdrop, then tint it with a translucent red-to-black
+            // gradient and a hairline edge. Keeping the tint translucent
+            // (rather than near-opaque) is what lets the blur actually
+            // read as glass instead of just a flat gradient panel.
             BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 14, sigmaY: 14),
+              filter: ImageFilter.blur(sigmaX: 18, sigmaY: 18),
               child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.white.withValues(alpha: .055),
-                  border: Border.all(
-                    color: Colors.white.withValues(alpha: .18),
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      AppColors.red.withValues(alpha: .32),
+                      AppColors.black.withValues(alpha: .58),
+                    ],
                   ),
-                ),
-              ),
-            ),
-            DecoratedBox(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [
-                    AppColors.red.withValues(alpha: .72),
-                    AppColors.black.withValues(alpha: .88),
-                  ],
+                  border: Border.all(
+                    color: Colors.white.withValues(alpha: .16),
+                  ),
                 ),
               ),
             ),
