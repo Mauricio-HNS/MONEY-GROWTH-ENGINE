@@ -163,11 +163,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 ],
               ),
             ),
-                  ],
-                ),
-              ),
-            );
-          },
+          ],
         ),
       ),
     );
@@ -202,153 +198,174 @@ class _OnboardingPage extends StatelessWidget {
     return AnimatedOpacity(
       duration: const Duration(milliseconds: 250),
       opacity: active ? 1 : .78,
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(24, 18, 24, 8),
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            final contentHeight = constraints.maxHeight.isFinite
-                ? constraints.maxHeight
-                : MediaQuery.sizeOf(context).height * .62;
-            return SingleChildScrollView(
-              physics: const BouncingScrollPhysics(),
-              child: ConstrainedBox(
-                constraints: BoxConstraints(minHeight: contentHeight),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Stack(
-              children: [
-                SizedBox(
-                  width: double.infinity,
-                  height: 270,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(30),
-                    child: Stack(
-                    fit: StackFit.expand,
-                    children: [
-                      const BrandImage(fit: BoxFit.cover, opacity: .18),
-                      BackdropFilter(
-                        filter: ImageFilter.blur(sigmaX: 14, sigmaY: 14),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white.withValues(alpha: .055),
-                            border: Border.all(color: Colors.white.withValues(alpha: .18)),
-                          ),
-                        ),
-                      ),
-                      DecoratedBox(
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                            colors: [
-                              AppColors.red.withValues(alpha: .72),
-                              AppColors.black.withValues(alpha: .88),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        left: 24,
-                        top: 24,
-                        child: Text(
-                          data.number,
-                          style: const TextStyle(
-                            color: AppColors.white,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w900,
-                            letterSpacing: 2.5,
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        right: 24,
-                        bottom: 24,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(24),
-                          child: BackdropFilter(
-                            filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
-                            child: Container(
-                              width: 82,
-                              height: 82,
-                              decoration: BoxDecoration(
-                                color: AppColors.red,
-                                borderRadius: BorderRadius.circular(24),
-                                border: Border.all(color: Colors.white.withValues(alpha: .28)),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: AppColors.red.withValues(alpha: .30),
-                                    blurRadius: 24,
-                                    offset: const Offset(0, 12),
-                                  ),
-                                ],
-                              ),
-                              child: Icon(data.icon, color: Colors.white, size: 40),
-                            ),
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        left: 24,
-                        bottom: 28,
-                        child: Container(
-                          width: 7,
-                          height: 74,
-                          decoration: BoxDecoration(
-                            color: AppColors.red,
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                        ),
-                      ),
-                    ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 28),
-            ClipRRect(
-              borderRadius: BorderRadius.circular(999),
-              child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 7),
-                  decoration: BoxDecoration(
-                    color: AppColors.red.withValues(alpha: .12),
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          return SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            padding: const EdgeInsets.fromLTRB(24, 18, 24, 16),
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                minHeight: constraints.maxHeight - 34,
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _GlassHero(data: data),
+                  const SizedBox(height: 28),
+                  ClipRRect(
                     borderRadius: BorderRadius.circular(999),
-                    border: Border.all(color: AppColors.red.withValues(alpha: .35)),
+                    child: BackdropFilter(
+                      filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 13,
+                          vertical: 7,
+                        ),
+                        decoration: BoxDecoration(
+                          color: AppColors.red.withValues(alpha: .12),
+                          borderRadius: BorderRadius.circular(999),
+                          border: Border.all(
+                            color: AppColors.red.withValues(alpha: .35),
+                          ),
+                        ),
+                        child: const Text(
+                          'YOUR FINANCIAL COMMAND CENTER',
+                          style: TextStyle(
+                            color: AppColors.red,
+                            fontSize: 10,
+                            fontWeight: FontWeight.w900,
+                            letterSpacing: 2.1,
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
-                  child: const Text(
-                    'YOUR FINANCIAL COMMAND CENTER',
-                    style: TextStyle(
-                      color: AppColors.red,
-                      fontSize: 10,
+                  const SizedBox(height: 10),
+                  Text(
+                    data.title,
+                    style: const TextStyle(
+                      color: AppColors.white,
+                      fontSize: 34,
+                      height: .94,
                       fontWeight: FontWeight.w900,
-                      letterSpacing: 2.1,
+                      letterSpacing: -1.8,
+                    ),
+                  ),
+                  const SizedBox(height: 14),
+                  Text(
+                    data.text,
+                    style: const TextStyle(
+                      color: AppColors.textMuted,
+                      fontSize: 15,
+                      height: 1.5,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+class _GlassHero extends StatelessWidget {
+  const _GlassHero({required this.data});
+
+  final _OnboardingData data;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      height: 270,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(30),
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            const BrandImage(fit: BoxFit.cover, opacity: .18),
+            BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 14, sigmaY: 14),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white.withValues(alpha: .055),
+                  border: Border.all(
+                    color: Colors.white.withValues(alpha: .18),
+                  ),
+                ),
+              ),
+            ),
+            DecoratedBox(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    AppColors.red.withValues(alpha: .72),
+                    AppColors.black.withValues(alpha: .88),
+                  ],
+                ),
+              ),
+            ),
+            Positioned(
+              left: 24,
+              top: 24,
+              child: Text(
+                data.number,
+                style: const TextStyle(
+                  color: AppColors.white,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w900,
+                  letterSpacing: 2.5,
+                ),
+              ),
+            ),
+            Positioned(
+              right: 24,
+              bottom: 24,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(24),
+                child: BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
+                  child: Container(
+                    width: 82,
+                    height: 82,
+                    decoration: BoxDecoration(
+                      color: AppColors.red,
+                      borderRadius: BorderRadius.circular(24),
+                      border: Border.all(
+                        color: Colors.white.withValues(alpha: .28),
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: AppColors.red.withValues(alpha: .30),
+                          blurRadius: 24,
+                          offset: const Offset(0, 12),
+                        ),
+                      ],
+                    ),
+                    child: Icon(
+                      data.icon,
+                      color: Colors.white,
+                      size: 40,
                     ),
                   ),
                 ),
               ),
             ),
-            const SizedBox(height: 10),
-            Text(
-              data.title,
-              style: const TextStyle(
-                color: AppColors.white,
-                fontSize: 34,
-                height: .94,
-                fontWeight: FontWeight.w900,
-                letterSpacing: -1.8,
-              ),
-            ),
-            const SizedBox(height: 14),
-            Text(
-              data.text,
-              style: const TextStyle(
-                color: AppColors.textMuted,
-                fontSize: 15,
-                height: 1.5,
+            Positioned(
+              left: 24,
+              bottom: 28,
+              child: Container(
+                width: 7,
+                height: 74,
+                decoration: BoxDecoration(
+                  color: AppColors.red,
+                  borderRadius: BorderRadius.circular(20),
+                ),
               ),
             ),
           ],
