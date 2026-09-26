@@ -1,8 +1,7 @@
-import 'dart:math' as math;
-
 import 'package:flutter/material.dart';
 
 import '../routes.dart';
+import '../style/brand.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -23,7 +22,7 @@ class _SplashScreenState extends State<SplashScreen>
       duration: const Duration(milliseconds: 1400),
     )..forward();
 
-    Future.delayed(const Duration(milliseconds: 1800), () {
+    Future.delayed(const Duration(milliseconds: 2200), () {
       if (mounted) {
         Navigator.pushReplacementNamed(context, AppRoutes.onboarding);
       }
@@ -47,101 +46,89 @@ class _SplashScreenState extends State<SplashScreen>
           return Stack(
             fit: StackFit.expand,
             children: [
-              // Subtle editorial motion lines.
+              Positioned.fill(
+                child: Opacity(
+                  opacity: .20,
+                  child: BrandImage(fit: BoxFit.cover),
+                ),
+              ),
               Positioned.fill(
                 child: CustomPaint(
                   painter: _MotionLinesPainter(progress: t),
                 ),
               ),
-
               SafeArea(
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(28, 24, 28, 28),
+                  padding: const EdgeInsets.fromLTRB(26, 24, 26, 28),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                        'STRATEGY\nBUILDS WEALTH',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 13,
-                          fontWeight: FontWeight.w800,
-                          height: 1.25,
-                          letterSpacing: 4,
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-                      Container(
-                        width: 42,
-                        height: 3,
-                        color: Colors.white,
-                      ),
-                      const Spacer(),
-
-                      // Large built-in runner: no external image or asset.
-                      Transform.translate(
-                        offset: Offset(42 * (1 - t), 0),
-                        child: Transform.rotate(
-                          angle: -0.055,
-                          child: const Align(
-                            alignment: Alignment.centerRight,
-                            child: Icon(
-                              Icons.directions_run_rounded,
-                              size: 310,
-                              color: Color(0xFF171717),
+                      Row(
+                        children: [
+                          const BrandMark(size: 48, borderRadius: 14),
+                          const SizedBox(width: 12),
+                          const Text(
+                            'MONEY GROWTH\nENGINE',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w900,
+                              height: 1,
+                              letterSpacing: 1.8,
                             ),
                           ),
+                        ],
+                      ),
+                      const Spacer(),
+                      Transform.translate(
+                        offset: Offset(0, 35 * (1 - t)),
+                        child: Container(
+                          height: MediaQuery.sizeOf(context).height * .39,
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            color: Colors.black.withValues(alpha: .28),
+                            borderRadius: BorderRadius.circular(26),
+                            border: Border.all(
+                              color: Colors.white.withValues(alpha: .18),
+                            ),
+                          ),
+                          clipBehavior: Clip.antiAlias,
+                          child: const BrandImage(fit: BoxFit.cover),
                         ),
                       ),
-
+                      const SizedBox(height: 22),
                       Transform.translate(
                         offset: Offset(0, 30 * (1 - t)),
                         child: const Text(
                           'MONEY\nGROWTH\nENGINE',
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 47,
+                            fontSize: 43,
                             fontWeight: FontWeight.w900,
-                            height: 0.86,
+                            height: .86,
                             letterSpacing: -2.2,
                           ),
                         ),
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: 14),
                       const Text(
                         'ANALYZE   /   PLAN   /   GROW',
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 11,
                           fontWeight: FontWeight.w800,
-                          letterSpacing: 2.6,
+                          letterSpacing: 2.5,
                         ),
                       ),
                       const Spacer(),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          const Expanded(
-                            child: Text(
-                              'YOUR MONEY.\nYOUR NEXT MOVE.',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 13,
-                                fontWeight: FontWeight.w800,
-                                height: 1.35,
-                                letterSpacing: 2.2,
-                              ),
-                            ),
-                          ),
-                          Transform.rotate(
-                            angle: -math.pi / 4,
-                            child: const Icon(
-                              Icons.arrow_forward_rounded,
-                              color: Colors.white,
-                              size: 38,
-                            ),
-                          ),
-                        ],
+                      const Text(
+                        'YOUR MONEY. YOUR NEXT MOVE.',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w800,
+                          letterSpacing: 2,
+                        ),
                       ),
                     ],
                   ),
@@ -163,15 +150,15 @@ class _MotionLinesPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = Colors.white.withValues(alpha: 0.11)
+      ..color = Colors.white.withValues(alpha: .10)
       ..strokeWidth = 2;
 
     for (var i = 0; i < 8; i++) {
-      final y = size.height * (0.18 + i * 0.085);
-      final start = -size.width * 0.15 + progress * size.width * 0.12;
+      final y = size.height * (.18 + i * .085);
+      final start = -size.width * .15 + progress * size.width * .12;
       canvas.drawLine(
         Offset(start, y),
-        Offset(size.width * (0.35 + i * 0.045), y - 35),
+        Offset(size.width * (.35 + i * .045), y - 35),
         paint,
       );
     }
