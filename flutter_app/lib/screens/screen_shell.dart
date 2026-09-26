@@ -7,9 +7,10 @@ import '../style/app_style.dart';
 import '../style/brand.dart';
 
 class ScreenShell extends StatelessWidget {
-  const ScreenShell({required this.title, required this.child, super.key});
+  const ScreenShell({required this.title, required this.child, this.showRadar = true, super.key});
   final String title;
   final Widget child;
+  final bool showRadar;
 
   @override
   Widget build(BuildContext context) {
@@ -19,10 +20,12 @@ class ScreenShell extends StatelessWidget {
         leadingWidth: 66,
         leading: const Padding(padding: EdgeInsets.only(left: 14), child: BrandMark(size: 42, borderRadius: 13)),
         title: Text(title.toUpperCase()),
-        actions: [
-          IconButton(tooltip: 'Opportunity Radar', onPressed: () => Navigator.pushNamed(context, AppRoutes.radar), icon: const AppIconBadge(icon: Icons.radar_rounded, size: 34)),
-          const SizedBox(width: 6),
-        ],
+        actions: showRadar
+            ? [
+                IconButton(tooltip: 'Opportunity Radar', onPressed: () => Navigator.pushNamed(context, AppRoutes.radar), icon: const AppIconBadge(icon: Icons.radar_rounded, size: 34)),
+                const SizedBox(width: 6),
+              ]
+            : const [],
       ),
       body: Stack(
         children: [
