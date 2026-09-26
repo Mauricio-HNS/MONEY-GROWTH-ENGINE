@@ -339,7 +339,6 @@ class _EditorialSlide extends StatelessWidget {
 
 class HeroPhoto extends StatelessWidget {
   const HeroPhoto({
-    super.key,
     required this.url,
     required this.background,
   });
