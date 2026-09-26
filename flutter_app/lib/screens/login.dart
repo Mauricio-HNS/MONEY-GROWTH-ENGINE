@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../routes.dart';
 import '../style/app_style.dart';
+import '../style/brand.dart';
 import 'screen_shell.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -29,6 +30,19 @@ class _LoginScreenState extends State<LoginScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Row(
+              children: [
+                const BrandMark(size: 54, borderRadius: 16),
+                const SizedBox(width: 14),
+                const Expanded(
+                  child: Text(
+                    BrandAssets.appName,
+                    style: TextStyle(color: AppColors.white, fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 1.5),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 24),
             const Text('Control your money. Grow with intention.', style: TextStyle(color: AppColors.textMuted, fontSize: 14)),
             const SizedBox(height: 28),
             _field('Email', email, Icons.email_outlined),
