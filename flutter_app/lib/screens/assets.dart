@@ -22,7 +22,7 @@ class _AssetsScreenState extends State<AssetsScreen> {
     SectionCard(title: 'Asset Monetizer', child: Text('Identify idle equipment, rooms, vehicles and other assets that can generate cash.', style: TextStyle(color: AppColors.textMuted))),
     const SizedBox(height: 14),
     SectionCard(title: 'Add asset', child: Column(children: [
-      TextField(controller: name, decoration: const InputDecoration(labelText: 'Asset name', prefixIcon: Icon(Icons.inventory_2_outlined))),
+      TextField(controller: name, decoration: const InputDecoration(labelText: 'Asset name', prefixIcon: AppIconBadge(icon: Icons.inventory_2_outlined))),
       const SizedBox(height: 10),
       TextField(controller: monthly, keyboardType: const TextInputType.numberWithOptions(decimal: true), decoration: const InputDecoration(labelText: 'Estimated monthly revenue', prefixText: '€ ')),
       const SizedBox(height: 12),
