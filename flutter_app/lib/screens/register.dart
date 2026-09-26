@@ -65,8 +65,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   );
 
   Widget _field(String label, TextEditingController controller, IconData icon, {TextInputType? keyboardType, String? Function(String?)? validator}) =>
-      TextFormField(controller: controller, keyboardType: keyboardType, validator: validator, style: const TextStyle(color: AppColors.white), textInputAction: TextInputAction.next, decoration: InputDecoration(labelText: label, prefixIcon: Icon(icon)));
+      TextFormField(controller: controller, keyboardType: keyboardType, validator: validator, style: const TextStyle(color: AppColors.white), textInputAction: TextInputAction.next, decoration: InputDecoration(labelText: label, prefixIcon: AppIconBadge(icon: icon)));
 
   Widget _passwordField(String label, TextEditingController controller, bool obscure, VoidCallback toggle, {String? Function(String?)? validator}) =>
-      TextFormField(controller: controller, obscureText: obscure, validator: validator, style: const TextStyle(color: AppColors.white), textInputAction: TextInputAction.next, decoration: InputDecoration(labelText: label, prefixIcon: const Icon(Icons.lock_outline), suffixIcon: IconButton(onPressed: toggle, icon: Icon(obscure ? Icons.visibility_outlined : Icons.visibility_off_outlined))));
+      TextFormField(controller: controller, obscureText: obscure, validator: validator, style: const TextStyle(color: AppColors.white), textInputAction: TextInputAction.next, decoration: InputDecoration(labelText: label, prefixIcon: const AppIconBadge(icon: Icons.lock_outline), suffixIcon: IconButton(onPressed: toggle, icon: Icon(obscure ? Icons.visibility_outlined : Icons.visibility_off_outlined))));
 }
