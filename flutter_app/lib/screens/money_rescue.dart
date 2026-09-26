@@ -69,5 +69,5 @@ class _Opportunity extends StatelessWidget {
   final IconData icon;
 
   @override
-  Widget build(BuildContext context) => ListTile(contentPadding: EdgeInsets.zero, leading: Icon(icon, color: AppColors.coldBlue), title: Text(title), trailing: Text('+ ${money(amount)}', style: const TextStyle(fontWeight: FontWeight.w800, color: AppColors.coldBlue)));
+  Widget build(BuildContext context) => ListTile(contentPadding: EdgeInsets.zero, leading: AppIconBadge(icon: icon, color: AppColors.coldBlue), title: Text(title), trailing: Text('+ ${money(amount)}', style: const TextStyle(fontWeight: FontWeight.w800, color: AppColors.coldBlue)));
 }
