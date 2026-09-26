@@ -61,7 +61,7 @@ class _IncomeScreenState extends State<IncomeScreen> {
                         controller: title,
                         decoration: const InputDecoration(
                           labelText: 'Source',
-                          prefixIcon: Icon(Icons.work_outline),
+                          prefixIcon: AppIconBadge(icon: Icons.work_outline),
                         ),
                       ),
                       const SizedBox(height: 12),
@@ -70,7 +70,7 @@ class _IncomeScreenState extends State<IncomeScreen> {
                         keyboardType: const TextInputType.numberWithOptions(decimal: true),
                         decoration: const InputDecoration(
                           labelText: 'Monthly amount',
-                          prefixIcon: Icon(Icons.euro_rounded),
+                          prefixIcon: AppIconBadge(icon: Icons.euro_rounded),
                         ),
                       ),
                       const SizedBox(height: 12),
@@ -106,7 +106,7 @@ class _IncomeScreenState extends State<IncomeScreen> {
                       ...store.incomes.map(
                         (item) => ListTile(
                           contentPadding: EdgeInsets.zero,
-                          leading: const Icon(
+                          leading: AppIconBadge(icon: 
                             Icons.trending_up_rounded,
                             color: AppColors.coldBlue,
                           ),
