@@ -27,7 +27,7 @@ class _InvestmentsScreenState extends State<InvestmentsScreen> {
     SectionCard(title: 'Investment Intelligence', child: Text('Track invested capital and organize your assets by type.', style: TextStyle(color: AppColors.textMuted))),
     const SizedBox(height: 14),
     SectionCard(title: 'Add investment', child: Column(children: [
-      TextField(controller: name, decoration: const InputDecoration(labelText: 'Investment name', prefixIcon: Icon(Icons.show_chart))),
+      TextField(controller: name, decoration: const InputDecoration(labelText: 'Investment name', prefixIcon: AppIconBadge(icon: Icons.show_chart))),
       const SizedBox(height: 10),
       DropdownButtonFormField<String>(value: type, decoration: const InputDecoration(labelText: 'Type'), items: const ['ETF','Stock','Fund','Bond','Crypto','Other'].map((e) => DropdownMenuItem(value:e, child:Text(e))).toList(), onChanged:(v)=>setState(()=>type=v!)),
       const SizedBox(height: 10),
