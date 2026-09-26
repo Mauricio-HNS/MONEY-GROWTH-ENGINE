@@ -260,12 +260,12 @@ class _OnboardingPage extends StatelessWidget {
                               width: 82,
                               height: 82,
                               decoration: BoxDecoration(
-                                color: Colors.white.withValues(alpha: .11),
+                                color: AppColors.red,
                                 borderRadius: BorderRadius.circular(24),
-                                border: Border.all(color: Colors.white.withValues(alpha: .30)),
+                                border: Border.all(color: Colors.white.withValues(alpha: .28)),
                                 boxShadow: [
                                   BoxShadow(
-                                    color: Colors.black.withValues(alpha: .28),
+                                    color: AppColors.red.withValues(alpha: .30),
                                     blurRadius: 24,
                                     offset: const Offset(0, 12),
                                   ),
