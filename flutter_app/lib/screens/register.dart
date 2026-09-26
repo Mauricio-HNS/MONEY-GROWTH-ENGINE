@@ -84,7 +84,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       return 'Enter your email';
     }
 
-    if (text.contains(RegExp(r'\\s'))) {
+    if (text.contains(RegExp(r'\s'))) {
       return 'Email cannot contain spaces';
     }
 
