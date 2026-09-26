@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import '../core/financial_store.dart';
 import '../routes.dart';
 import '../style/app_style.dart';
-import '../style/brand.dart';
 import 'screen_shell.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -26,12 +25,7 @@ class HomeScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(children: [
-                const BrandMark(size: 44, borderRadius: 13),
-                const SizedBox(width: 12),
-                const Expanded(child: Text(BrandAssets.appName, style: TextStyle(color: AppColors.white, fontSize: 13, fontWeight: FontWeight.w900, letterSpacing: 1.3))),
-              ]),
-              const SizedBox(height: 16),
+              const SizedBox(height: 8),
               Container(
                 width: double.infinity,
                 padding: const EdgeInsets.all(22),
@@ -133,7 +127,7 @@ class _AgentTile extends StatelessWidget {
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15), side: const BorderSide(color: AppColors.border)),
     child: ListTile(
       onTap: () => Navigator.pushNamed(context, route),
-      leading: CircleAvatar(backgroundColor: AppColors.darkKnight, foregroundColor: AppColors.coldBlue, child: Icon(icon)),
+      leading: Container(width: 42, height: 42, decoration: BoxDecoration(color: AppColors.red, borderRadius: BorderRadius.circular(13)), child: Icon(icon, color: AppColors.white)),
       title: Text(title, style: const TextStyle(fontWeight: FontWeight.w700, color: AppColors.white)),
       subtitle: Text(subtitle, style: const TextStyle(color: AppColors.textMuted, fontSize: 12)),
       trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 14, color: AppColors.laguna),
