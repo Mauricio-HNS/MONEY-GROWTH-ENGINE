@@ -114,7 +114,7 @@ class _FinancialSetupScreenState extends State<FinancialSetupScreen> {
       const SizedBox(height: 12),
       DropdownButtonFormField<String>(
         initialValue: currency,
-        decoration: const InputDecoration(labelText: 'Base currency', prefixIcon: Icon(Icons.currency_exchange)),
+        decoration: const InputDecoration(labelText: 'Base currency', prefixIcon: AppIconBadge(icon: Icons.currency_exchange)),
         items: const [
           DropdownMenuItem(value: 'EUR', child: Text('EUR — Euro')),
           DropdownMenuItem(value: 'BRL', child: Text('BRL — Brazilian Real')),
@@ -158,7 +158,7 @@ class _FinancialSetupScreenState extends State<FinancialSetupScreen> {
     children: [
       DropdownButtonFormField<String>(
         initialValue: objective,
-        decoration: const InputDecoration(labelText: 'Main financial goal', prefixIcon: Icon(Icons.flag_outlined)),
+        decoration: const InputDecoration(labelText: 'Main financial goal', prefixIcon: AppIconBadge(icon: Icons.flag_outlined)),
         items: const [
           DropdownMenuItem(value: 'Recover money', child: Text('Recover money')),
           DropdownMenuItem(value: 'Increase income', child: Text('Increase income')),
@@ -191,7 +191,7 @@ class _FinancialSetupScreenState extends State<FinancialSetupScreen> {
       if (value != null && value.trim().isNotEmpty && (amount == null || amount < 0)) return 'Enter a valid amount';
       return null;
     },
-    decoration: InputDecoration(labelText: label, prefixIcon: Icon(icon)),
+    decoration: InputDecoration(labelText: label, prefixIcon: AppIconBadge(icon: icon)),
   );
 }
 
