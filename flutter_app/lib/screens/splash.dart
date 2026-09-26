@@ -1,8 +1,7 @@
-import 'dart:math' as math;
-
 import 'package:flutter/material.dart';
 
 import '../routes.dart';
+import '../style/brand.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -13,262 +12,303 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen>
     with TickerProviderStateMixin {
-  late final PageController _pages;
-  late final AnimationController _motion;
-  int _index = 0;
+  late final PageController _pageController;
+  late final AnimationController _intro;
+  int _page = 0;
+
+  static const _slides = <_SplashData>[
+    _SplashData(
+      image:
+          'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=1400&q=90',
+      kicker: '01 / CONTROL',
+      headline: 'KNOW\nYOUR\nMONEY.',
+      body: 'See what comes in, what goes out, and what is quietly holding you back.',
+      background: Color(0xFFE50914),
+      accent: Color(0xFFFFB4B8),
+    ),
+    _SplashData(
+      image:
+          'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=1400&q=90',
+      kicker: '02 / CLARITY',
+      headline: 'MAKE\nNUMBERS\nMEANINGFUL.',
+      body: 'Turn scattered financial data into a clear picture of your next move.',
+      background: Color(0xFF171717),
+      accent: Color(0xFFE50914),
+    ),
+    _SplashData(
+      image:
+          'https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=1400&q=90',
+      kicker: '03 / GROWTH',
+      headline: 'BUILD\nWHAT\nCOMES NEXT.',
+      body: 'Plan smarter. Protect your money. Grow with a system built around you.',
+      background: Color(0xFFF2E8E5),
+      accent: Color(0xFFE50914),
+      darkText: true,
+    ),
+  ];
 
   @override
   void initState() {
     super.initState();
-    _pages = PageController();
-    _motion = AnimationController(
+    _pageController = PageController();
+    _intro = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 1800),
-    )..repeat(reverse: true);
+      duration: const Duration(milliseconds: 900),
+    )..forward();
   }
 
   @override
   void dispose() {
-    _pages.dispose();
-    _motion.dispose();
+    _pageController.dispose();
+    _intro.dispose();
     super.dispose();
   }
 
-  void _continue() {
-    if (_index < 2) {
-      _pages.nextPage(
-        duration: const Duration(milliseconds: 650),
+  void _next() {
+    if (_page < _slides.length - 1) {
+      _pageController.nextPage(
+        duration: const Duration(milliseconds: 520),
         curve: Curves.easeOutCubic,
       );
-      return;
+    } else {
+      _finish();
     }
+  }
 
+  void _finish() {
     Navigator.pushReplacementNamed(context, AppRoutes.onboarding);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: PageView(
-        controller: _pages,
-        physics: const BouncingScrollPhysics(),
-        onPageChanged: (value) => setState(() => _index = value),
-        children: [
-          _EditorialSplash(
-            motion: _motion,
-            background: const Color(0xFFB94A58),
-            secondary: const Color(0xFFE9BFC3),
-            foreground: const Color(0xFFF8E9E4),
-            eyebrow: '01  /  MONEY',
-            title: const ['KNOW', 'YOUR', 'MONEY.'],
-            description:
-                'See your financial life clearly before making your next move.',
-            pose: _PersonPose.forward,
-          ),
-          _EditorialSplash(
-            motion: _motion,
-            background: const Color(0xFFE4C9B8),
-            secondary: const Color(0xFFB98B7D),
-            foreground: const Color(0xFF4A292D),
-            eyebrow: '02  /  CLARITY',
-            title: const ['FIND', 'WHAT', 'MATTERS.'],
-            description:
-                'Turn scattered numbers into a simple picture of what comes next.',
-            pose: _PersonPose.side,
-          ),
-          _EditorialSplash(
-            motion: _motion,
-            background: const Color(0xFF403238),
-            secondary: const Color(0xFFC98D91),
-            foreground: const Color(0xFFF6E8DF),
-            eyebrow: '03  /  GROW',
-            title: const ['MAKE', 'YOUR', 'NEXT MOVE.'],
-            description:
-                'Analyze. Plan. Grow. Build momentum one decision at a time.',
-            pose: _PersonPose.confident,
-            finalPage: true,
-            onContinue: _continue,
-          ),
-        ],
+      backgroundColor: Colors.black,
+      body: PageView.builder(
+        controller: _pageController,
+        itemCount: _slides.length,
+        onPageChanged: (value) {
+          setState(() => _page = value);
+          _intro
+            ..reset()
+            ..forward();
+        },
+        itemBuilder: (context, index) {
+          return _EditorialSlide(
+            data: _slides[index],
+            page: index,
+            total: _slides.length,
+            animation: _intro,
+            onNext: _next,
+            onSkip: _finish,
+          );
+        },
       ),
     );
   }
 }
 
-enum _PersonPose { forward, side, confident }
-
-class _EditorialSplash extends StatelessWidget {
-  const _EditorialSplash({
-    required this.motion,
+class _SplashData {
+  const _SplashData({
+    required this.image,
+    required this.kicker,
+    required this.headline,
+    required this.body,
     required this.background,
-    required this.secondary,
-    required this.foreground,
-    required this.eyebrow,
-    required this.title,
-    required this.description,
-    required this.pose,
-    this.finalPage = false,
-    this.onContinue,
+    required this.accent,
+    this.darkText = false,
   });
 
-  final Animation<double> motion;
+  final String image;
+  final String kicker;
+  final String headline;
+  final String body;
   final Color background;
-  final Color secondary;
-  final Color foreground;
-  final String eyebrow;
-  final List<String> title;
-  final String description;
-  final _PersonPose pose;
-  final bool finalPage;
-  final VoidCallback? onContinue;
+  final Color accent;
+  final bool darkText;
+}
+
+class _EditorialSlide extends StatelessWidget {
+  const _EditorialSlide({
+    required this.data,
+    required this.page,
+    required this.total,
+    required this.animation,
+    required this.onNext,
+    required this.onSkip,
+  });
+
+  final _SplashData data;
+  final int page;
+  final int total;
+  final Animation<double> animation;
+  final VoidCallback onNext;
+  final VoidCallback onSkip;
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: motion,
-      builder: (context, _) {
-        final drift = math.sin(motion.value * math.pi) * 8;
+    final size = MediaQuery.sizeOf(context);
+    final foreground = data.darkText ? const Color(0xFF171717) : Colors.white;
 
-        return DecoratedBox(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [
-                background,
-                Color.lerp(background, secondary, .45)!,
-                background,
-              ],
-            ),
-          ),
+    return AnimatedBuilder(
+      animation: animation,
+      builder: (context, _) {
+        final imageOffset = 36 * (1 - animation.value);
+        final textOffset = 24 * (1 - animation.value);
+
+        return Container(
+          color: data.background,
           child: Stack(
             fit: StackFit.expand,
             children: [
-              CustomPaint(
-                painter: _EditorialBackgroundPainter(
-                  accent: secondary,
-                  progress: motion.value,
+              Positioned(
+                top: -imageOffset,
+                right: -size.width * .18,
+                width: size.width * 1.08,
+                height: size.height * .70,
+                child: HeroPhoto(
+                  url: data.image,
+                  background: data.background,
                 ),
               ),
 
-              Positioned(
-                top: -35 + drift,
-                right: -30,
-                child: _SoftOrb(
-                  size: 220,
-                  color: secondary.withValues(alpha: .32),
-                ),
-              ),
-
-              Positioned(
-                top: MediaQuery.sizeOf(context).height * .06 + drift,
-                right: -35,
-                child: SizedBox(
-                  width: MediaQuery.sizeOf(context).width * .78,
-                  height: MediaQuery.sizeOf(context).height * .62,
-                  child: CustomPaint(
-                    painter: _ElegantPersonPainter(
-                      color: foreground,
-                      secondary: secondary,
-                      pose: pose,
+              // Strong editorial crop/gradient so the typography remains
+              // readable while the photograph stays dominant.
+              Positioned.fill(
+                child: IgnorePointer(
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        stops: const [0, .34, .60, 1],
+                        colors: [
+                          Colors.black.withValues(alpha: .10),
+                          Colors.transparent,
+                          data.background.withValues(alpha: .18),
+                          data.background,
+                        ],
+                      ),
                     ),
                   ),
                 ),
               ),
 
+              // Graphic red accent bar.
+              Positioned(
+                top: 0,
+                left: 0,
+                width: 8,
+                height: size.height,
+                child: ColoredBox(color: data.accent),
+              ),
+
               SafeArea(
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(28, 26, 28, 24),
+                  padding: const EdgeInsets.fromLTRB(28, 18, 24, 22),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        eyebrow,
-                        style: TextStyle(
-                          color: foreground.withValues(alpha: .72),
-                          fontSize: 11,
-                          fontWeight: FontWeight.w800,
-                          letterSpacing: 2.8,
-                        ),
-                      ),
-                      const Spacer(flex: 5),
-                      Text(
-                        title.join('\n'),
-                        style: TextStyle(
-                          color: foreground,
-                          fontSize: 48,
-                          fontWeight: FontWeight.w900,
-                          height: .87,
-                          letterSpacing: -2.6,
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-                      SizedBox(
-                        width: MediaQuery.sizeOf(context).width * .72,
-                        child: Text(
-                          description,
-                          style: TextStyle(
-                            color: foreground.withValues(alpha: .78),
-                            fontSize: 14,
-                            height: 1.5,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                      const Spacer(flex: 3),
                       Row(
                         children: [
-                          ...List.generate(
-                            3,
-                            (i) => AnimatedContainer(
-                              duration: const Duration(milliseconds: 300),
-                              margin: const EdgeInsets.only(right: 7),
-                              width: i == title.length - 3 ? 28 : 7,
-                              height: 7,
-                              decoration: BoxDecoration(
-                                color: foreground.withValues(
-                                  alpha: i == title.length - 3 ? 1 : .28,
-                                ),
-                                borderRadius: BorderRadius.circular(10),
+                          SizedBox(
+                            width: 48,
+                            height: 48,
+                            child: BrandImage(
+                              fit: BoxFit.contain,
+                              opacity: .96,
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Text(
+                              BrandAssets.appName,
+                              style: TextStyle(
+                                color: foreground,
+                                fontSize: 10,
+                                fontWeight: FontWeight.w900,
+                                letterSpacing: 2.1,
                               ),
                             ),
                           ),
-                          const Spacer(),
-                          if (finalPage)
-                            FilledButton(
-                              onPressed: onContinue,
-                              style: FilledButton.styleFrom(
-                                backgroundColor: foreground,
-                                foregroundColor: background,
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 24,
-                                  vertical: 15,
-                                ),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(30),
-                                ),
+                          TextButton(
+                            onPressed: onSkip,
+                            style: TextButton.styleFrom(
+                              foregroundColor:
+                                  foreground.withValues(alpha: .78),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8,
+                                vertical: 8,
                               ),
-                              child: const Text(
-                                'CONTINUE',
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w900,
-                                  letterSpacing: 1.5,
-                                ),
+                            ),
+                            child: Text(
+                              page == total - 1 ? 'START' : 'SKIP',
+                              style: const TextStyle(
+                                fontSize: 10,
+                                fontWeight: FontWeight.w900,
+                                letterSpacing: 1.5,
                               ),
-                            )
-                          else
-                            TextButton(
-                              onPressed: onContinue,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const Spacer(),
+                      Transform.translate(
+                        offset: Offset(0, textOffset),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              data.kicker,
+                              style: TextStyle(
+                                color: data.accent,
+                                fontSize: 11,
+                                fontWeight: FontWeight.w900,
+                                letterSpacing: 2.6,
+                              ),
+                            ),
+                            const SizedBox(height: 12),
+                            Text(
+                              data.headline,
+                              style: TextStyle(
+                                color: foreground,
+                                fontSize: 49,
+                                height: .88,
+                                fontWeight: FontWeight.w900,
+                                letterSpacing: -2.8,
+                              ),
+                            ),
+                            const SizedBox(height: 18),
+                            ConstrainedBox(
+                              constraints: const BoxConstraints(maxWidth: 330),
                               child: Text(
-                                'NEXT',
+                                data.body,
                                 style: TextStyle(
-                                  color: foreground,
-                                  fontWeight: FontWeight.w900,
-                                  letterSpacing: 1.5,
+                                  color: foreground.withValues(alpha: .76),
+                                  fontSize: 14,
+                                  height: 1.48,
+                                  fontWeight: FontWeight.w500,
                                 ),
                               ),
                             ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 26),
+                      Row(
+                        children: [
+                          _Progress(
+                            current: page,
+                            total: total,
+                            foreground: foreground,
+                            accent: data.accent,
+                          ),
+                          const Spacer(),
+                          _NextButton(
+                            label: page == total - 1 ? 'GET STARTED' : 'NEXT',
+                            foreground: foreground,
+                            background: data.accent,
+                            onPressed: onNext,
+                          ),
                         ],
                       ),
                     ],
@@ -283,238 +323,117 @@ class _EditorialSplash extends StatelessWidget {
   }
 }
 
-class _SoftOrb extends StatelessWidget {
-  const _SoftOrb({required this.size, required this.color});
+class HeroPhoto extends StatelessWidget {
+  const HeroPhoto({
+    required this.url,
+    required this.background,
+  });
 
-  final double size;
-  final Color color;
+  final String url;
+  final Color background;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: size,
-      height: size,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: color,
-        boxShadow: [
-          BoxShadow(
-            color: color.withValues(alpha: .22),
-            blurRadius: 80,
-            spreadRadius: 20,
+    return Image.network(
+      url,
+      fit: BoxFit.cover,
+      alignment: Alignment.topCenter,
+      loadingBuilder: (context, child, progress) {
+        if (progress == null) return child;
+        return ColoredBox(color: background);
+      },
+      errorBuilder: (_, __, ___) => ColoredBox(
+        color: background,
+        child: Icon(
+          Icons.person_rounded,
+          size: 110,
+          color: Colors.white.withValues(alpha: .12),
+        ),
+      ),
+    );
+  }
+}
+
+class _Progress extends StatelessWidget {
+  const _Progress({
+    required this.current,
+    required this.total,
+    required this.foreground,
+    required this.accent,
+  });
+
+  final int current;
+  final int total;
+  final Color foreground;
+  final Color accent;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: List.generate(
+        total,
+        (index) => AnimatedContainer(
+          duration: const Duration(milliseconds: 260),
+          margin: const EdgeInsets.only(right: 6),
+          width: index == current ? 30 : 7,
+          height: 6,
+          decoration: BoxDecoration(
+            color: index == current
+                ? accent
+                : foreground.withValues(alpha: .28),
+            borderRadius: BorderRadius.circular(20),
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class _NextButton extends StatelessWidget {
+  const _NextButton({
+    required this.label,
+    required this.foreground,
+    required this.background,
+    required this.onPressed,
+  });
+
+  final String label;
+  final Color foreground;
+  final Color background;
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return FilledButton(
+      onPressed: onPressed,
+      style: FilledButton.styleFrom(
+        backgroundColor: background,
+        foregroundColor: foreground == Colors.white
+            ? const Color(0xFF171717)
+            : Colors.white,
+        padding: const EdgeInsets.symmetric(
+          horizontal: 20,
+          vertical: 15,
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(4),
+        ),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            label,
+            style: const TextStyle(
+              fontSize: 10,
+              fontWeight: FontWeight.w900,
+              letterSpacing: 1.4,
+            ),
+          ),
+          const SizedBox(width: 8),
+          const Icon(Icons.arrow_forward_rounded, size: 16),
         ],
       ),
     );
   }
-}
-
-class _EditorialBackgroundPainter extends CustomPainter {
-  const _EditorialBackgroundPainter({
-    required this.accent,
-    required this.progress,
-  });
-
-  final Color accent;
-  final double progress;
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = accent.withValues(alpha: .14)
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 1.2;
-
-    for (var i = 0; i < 7; i++) {
-      final path = Path();
-      final y = size.height * (.18 + i * .105);
-      path.moveTo(-30, y);
-      path.cubicTo(
-        size.width * .28,
-        y - 60,
-        size.width * .56,
-        y + 50,
-        size.width + 40,
-        y - 20,
-      );
-      canvas.drawPath(path, paint);
-    }
-
-    final line = Paint()
-      ..color = accent.withValues(alpha: .10)
-      ..strokeWidth = 2;
-
-    final x = size.width * (.10 + progress * .12);
-    canvas.drawLine(
-      Offset(x, size.height * .72),
-      Offset(x + 100, size.height * .55),
-      line,
-    );
-  }
-
-  @override
-  bool shouldRepaint(covariant _EditorialBackgroundPainter oldDelegate) =>
-      oldDelegate.progress != progress;
-}
-
-class _ElegantPersonPainter extends CustomPainter {
-  const _ElegantPersonPainter({
-    required this.color,
-    required this.secondary,
-    required this.pose,
-  });
-
-  final Color color;
-  final Color secondary;
-  final _PersonPose pose;
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final s = math.min(size.width, size.height) / 430;
-    canvas.save();
-    canvas.scale(s);
-
-    final skin = secondary.withValues(alpha: .92);
-    final garment = color.withValues(alpha: .96);
-    final soft = color.withValues(alpha: .42);
-
-    // Head.
-    final head = Paint()..color = skin;
-    canvas.drawOval(
-      Rect.fromCenter(
-        center: Offset(255, 88),
-        width: 72,
-        height: 92,
-      ),
-      head,
-    );
-
-    // Hair / silhouette.
-    final hair = Paint()..color = garment;
-    final hairPath = Path()
-      ..moveTo(218, 83)
-      ..quadraticBezierTo(220, 30, 264, 32)
-      ..quadraticBezierTo(304, 35, 300, 82)
-      ..quadraticBezierTo(278, 58, 246, 64)
-      ..quadraticBezierTo(233, 72, 218, 83)
-      ..close();
-    canvas.drawPath(hairPath, hair);
-
-    // Neck.
-    canvas.drawRect(
-      const Rect.fromLTWH(242, 126, 29, 42),
-      Paint()..color = skin,
-    );
-
-    // Body / flowing editorial garment.
-    final body = Path()
-      ..moveTo(232, 150)
-      ..quadraticBezierTo(195, 170, 180, 235)
-      ..quadraticBezierTo(166, 315, 185, 408)
-      ..lineTo(330, 408)
-      ..quadraticBezierTo(339, 318, 314, 225)
-      ..quadraticBezierTo(299, 171, 274, 150)
-      ..close();
-    canvas.drawPath(body, Paint()..color = garment);
-
-    // Shoulder highlight.
-    final highlight = Paint()
-      ..color = soft
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 7
-      ..strokeCap = StrokeCap.round;
-
-    canvas.drawArc(
-      const Rect.fromLTWH(193, 158, 116, 110),
-      math.pi * .05,
-      math.pi * .72,
-      false,
-      highlight,
-    );
-
-    // Arms vary by pose.
-    final arm = Paint()
-      ..color = skin
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 25
-      ..strokeCap = StrokeCap.round;
-
-    switch (pose) {
-      case _PersonPose.forward:
-        canvas.drawLine(
-          const Offset(207, 184),
-          const Offset(144, 268),
-          arm,
-        );
-        canvas.drawLine(
-          const Offset(303, 184),
-          const Offset(343, 265),
-          arm,
-        );
-      case _PersonPose.side:
-        canvas.drawLine(
-          const Offset(214, 185),
-          const Offset(147, 215),
-          arm,
-        );
-        canvas.drawLine(
-          const Offset(296, 185),
-          const Offset(323, 285),
-          arm,
-        );
-      case _PersonPose.confident:
-        canvas.drawLine(
-          const Offset(211, 185),
-          const Offset(151, 130),
-          arm,
-        );
-        canvas.drawLine(
-          const Offset(301, 185),
-          const Offset(354, 235),
-          arm,
-        );
-    }
-
-    // Legs.
-    final leg = Paint()
-      ..color = garment
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 38
-      ..strokeCap = StrokeCap.round;
-
-    canvas.drawLine(
-      const Offset(225, 388),
-      Offset(
-        pose == _PersonPose.side ? 210 : 205,
-        520,
-      ),
-      leg,
-    );
-    canvas.drawLine(
-      const Offset(285, 388),
-      Offset(
-        pose == _PersonPose.confident ? 326 : 300,
-        520,
-      ),
-      leg,
-    );
-
-    // Minimal shoes.
-    final shoe = Paint()
-      ..color = color.withValues(alpha: .98)
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 12
-      ..strokeCap = StrokeCap.round;
-
-    canvas.drawLine(const Offset(190, 520), const Offset(220, 520), shoe);
-    canvas.drawLine(const Offset(298, 520), const Offset(332, 520), shoe);
-
-    canvas.restore();
-  }
-
-  @override
-  bool shouldRepaint(covariant _ElegantPersonPainter oldDelegate) =>
-      oldDelegate.pose != pose ||
-      oldDelegate.color != color ||
-      oldDelegate.secondary != secondary;
 }
