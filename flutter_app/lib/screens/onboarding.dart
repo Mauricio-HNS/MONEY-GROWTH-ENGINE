@@ -314,48 +314,26 @@ class _GlassHero extends StatelessWidget {
               ),
             ),
             Positioned(
-              right: 24,
+              left: 24,
               bottom: 24,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(24),
-                child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
-                  child: Container(
-                    width: 82,
-                    height: 82,
-                    decoration: BoxDecoration(
-                      color: AppColors.red,
-                      borderRadius: BorderRadius.circular(24),
-                      border: Border.all(
-                        color: Colors.white.withValues(alpha: .28),
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: AppColors.red.withValues(alpha: .30),
-                          blurRadius: 24,
-                          offset: const Offset(0, 12),
-                        ),
-                      ],
-                    ),
-                    child: Icon(
-                      data.icon,
-                      color: Colors.white,
-                      size: 40,
+              child: Row(
+                children: [
+                  Container(
+                    width: 34,
+                    height: 2,
+                    color: AppColors.red,
+                  ),
+                  const SizedBox(width: 10),
+                  Text(
+                    data.title,
+                    style: const TextStyle(
+                      color: AppColors.white,
+                      fontSize: 10,
+                      fontWeight: FontWeight.w900,
+                      letterSpacing: 2.2,
                     ),
                   ),
-                ),
-              ),
-            ),
-            Positioned(
-              left: 24,
-              bottom: 28,
-              child: Container(
-                width: 7,
-                height: 74,
-                decoration: BoxDecoration(
-                  color: AppColors.red,
-                  borderRadius: BorderRadius.circular(20),
-                ),
+                ],
               ),
             ),
           ],
