@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import '../routes.dart';
@@ -14,6 +16,7 @@ class _SplashScreenState extends State<SplashScreen>
     with TickerProviderStateMixin {
   late final PageController _pageController;
   late final AnimationController _intro;
+  Timer? _timer;
   int _page = 0;
 
   static const _slides = <_SplashData>[
@@ -53,29 +56,41 @@ class _SplashScreenState extends State<SplashScreen>
     _pageController = PageController();
     _intro = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 900),
+      duration: const Duration(milliseconds: 850),
     )..forward();
+
+    _timer = Timer.periodic(const Duration(seconds: 4), (_) {
+      if (!mounted) return;
+      if (_page < _slides.length - 1) {
+        _pageController.nextPage(
+          duration: const Duration(milliseconds: 650),
+          curve: Curves.easeInOutCubic,
+        );
+      } else {
+        _timer?.cancel();
+      }
+    });
   }
 
   @override
   void dispose() {
+    _timer?.cancel();
     _pageController.dispose();
     _intro.dispose();
     super.dispose();
   }
 
-  void _next() {
-    if (_page < _slides.length - 1) {
-      _pageController.nextPage(
-        duration: const Duration(milliseconds: 520),
-        curve: Curves.easeOutCubic,
-      );
-    } else {
-      _finish();
-    }
+  void _goToPage(int page) {
+    _timer?.cancel();
+    _pageController.animateToPage(
+      page,
+      duration: const Duration(milliseconds: 600),
+      curve: Curves.easeInOutCubic,
+    );
   }
 
   void _finish() {
+    _timer?.cancel();
     Navigator.pushReplacementNamed(context, AppRoutes.onboarding);
   }
 
@@ -86,11 +101,15 @@ class _SplashScreenState extends State<SplashScreen>
       body: PageView.builder(
         controller: _pageController,
         itemCount: _slides.length,
+        physics: const BouncingScrollPhysics(),
         onPageChanged: (value) {
           setState(() => _page = value);
           _intro
             ..reset()
             ..forward();
+          if (value == _slides.length - 1) {
+            _timer?.cancel();
+          }
         },
         itemBuilder: (context, index) {
           return _EditorialSlide(
@@ -98,8 +117,8 @@ class _SplashScreenState extends State<SplashScreen>
             page: index,
             total: _slides.length,
             animation: _intro,
-            onNext: _next,
-            onSkip: _finish,
+            onFinish: _finish,
+            onTapProgress: _goToPage,
           );
         },
       ),
@@ -133,16 +152,16 @@ class _EditorialSlide extends StatelessWidget {
     required this.page,
     required this.total,
     required this.animation,
-    required this.onNext,
-    required this.onSkip,
+    required this.onFinish,
+    required this.onTapProgress,
   });
 
   final _SplashData data;
   final int page;
   final int total;
   final Animation<double> animation;
-  final VoidCallback onNext;
-  final VoidCallback onSkip;
+  final VoidCallback onFinish;
+  final void Function(int page) onTapProgress;
 
   @override
   Widget build(BuildContext context) {
@@ -152,8 +171,8 @@ class _EditorialSlide extends StatelessWidget {
     return AnimatedBuilder(
       animation: animation,
       builder: (context, _) {
-        final imageOffset = 36 * (1 - animation.value);
-        final textOffset = 24 * (1 - animation.value);
+        final imageOffset = 38 * (1 - animation.value);
+        final textOffset = 26 * (1 - animation.value);
 
         return Container(
           color: data.background,
@@ -170,9 +189,6 @@ class _EditorialSlide extends StatelessWidget {
                   background: data.background,
                 ),
               ),
-
-              // Strong editorial crop/gradient so the typography remains
-              // readable while the photograph stays dominant.
               Positioned.fill(
                 child: IgnorePointer(
                   child: DecoratedBox(
@@ -182,9 +198,9 @@ class _EditorialSlide extends StatelessWidget {
                         end: Alignment.bottomCenter,
                         stops: const [0, .34, .60, 1],
                         colors: [
-                          Colors.black.withValues(alpha: .10),
+                          Colors.black.withValues(alpha: .12),
                           Colors.transparent,
-                          data.background.withValues(alpha: .18),
+                          data.background.withValues(alpha: .20),
                           data.background,
                         ],
                       ),
@@ -192,19 +208,16 @@ class _EditorialSlide extends StatelessWidget {
                   ),
                 ),
               ),
-
-              // Graphic red accent bar.
               Positioned(
                 top: 0,
                 left: 0,
-                width: 8,
+                width: 7,
                 height: size.height,
                 child: ColoredBox(color: data.accent),
               ),
-
               SafeArea(
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(28, 18, 24, 22),
+                  padding: const EdgeInsets.fromLTRB(26, 18, 22, 24),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -231,18 +244,18 @@ class _EditorialSlide extends StatelessWidget {
                             ),
                           ),
                           TextButton(
-                            onPressed: onSkip,
+                            onPressed: onFinish,
                             style: TextButton.styleFrom(
                               foregroundColor:
-                                  foreground.withValues(alpha: .78),
+                                  foreground.withValues(alpha: .76),
                               padding: const EdgeInsets.symmetric(
                                 horizontal: 8,
                                 vertical: 8,
                               ),
                             ),
-                            child: Text(
-                              page == total - 1 ? 'START' : 'SKIP',
-                              style: const TextStyle(
+                            child: const Text(
+                              'PULAR',
+                              style: TextStyle(
                                 fontSize: 10,
                                 fontWeight: FontWeight.w900,
                                 letterSpacing: 1.5,
@@ -283,7 +296,7 @@ class _EditorialSlide extends StatelessWidget {
                               child: Text(
                                 data.body,
                                 style: TextStyle(
-                                  color: foreground.withValues(alpha: .76),
+                                  color: foreground.withValues(alpha: .78),
                                   fontSize: 14,
                                   height: 1.48,
                                   fontWeight: FontWeight.w500,
@@ -293,22 +306,22 @@ class _EditorialSlide extends StatelessWidget {
                           ],
                         ),
                       ),
-                      const SizedBox(height: 26),
+                      const SizedBox(height: 28),
                       Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           _Progress(
                             current: page,
                             total: total,
                             foreground: foreground,
                             accent: data.accent,
+                            onTap: onTapProgress,
                           ),
                           const Spacer(),
-                          _NextButton(
-                            label: page == total - 1 ? 'GET STARTED' : 'NEXT',
-                            foreground: foreground,
-                            background: data.accent,
-                            onPressed: onNext,
-                          ),
+                          if (page == total - 1)
+                            _GlassContinueButton(
+                              onPressed: onFinish,
+                            ),
                         ],
                       ),
                     ],
@@ -360,28 +373,33 @@ class _Progress extends StatelessWidget {
     required this.total,
     required this.foreground,
     required this.accent,
+    required this.onTap,
   });
 
   final int current;
   final int total;
   final Color foreground;
   final Color accent;
+  final void Function(int page) onTap;
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: List.generate(
         total,
-        (index) => AnimatedContainer(
-          duration: const Duration(milliseconds: 260),
-          margin: const EdgeInsets.only(right: 6),
-          width: index == current ? 30 : 7,
-          height: 6,
-          decoration: BoxDecoration(
-            color: index == current
-                ? accent
-                : foreground.withValues(alpha: .28),
-            borderRadius: BorderRadius.circular(20),
+        (index) => GestureDetector(
+          onTap: () => onTap(index),
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 260),
+            margin: const EdgeInsets.only(right: 7),
+            width: index == current ? 34 : 7,
+            height: 6,
+            decoration: BoxDecoration(
+              color: index == current
+                  ? accent
+                  : foreground.withValues(alpha: .30),
+              borderRadius: BorderRadius.circular(20),
+            ),
           ),
         ),
       ),
@@ -389,50 +407,63 @@ class _Progress extends StatelessWidget {
   }
 }
 
-class _NextButton extends StatelessWidget {
-  const _NextButton({
-    required this.label,
-    required this.foreground,
-    required this.background,
+class _GlassContinueButton extends StatelessWidget {
+  const _GlassContinueButton({
     required this.onPressed,
   });
 
-  final String label;
-  final Color foreground;
-  final Color background;
   final VoidCallback onPressed;
 
   @override
   Widget build(BuildContext context) {
-    return FilledButton(
-      onPressed: onPressed,
-      style: FilledButton.styleFrom(
-        backgroundColor: background,
-        foregroundColor: foreground == Colors.white
-            ? const Color(0xFF171717)
-            : Colors.white,
-        padding: const EdgeInsets.symmetric(
-          horizontal: 20,
-          vertical: 15,
-        ),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(4),
-        ),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(
-            label,
-            style: const TextStyle(
-              fontSize: 10,
-              fontWeight: FontWeight.w900,
-              letterSpacing: 1.4,
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(18),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onPressed,
+          child: Container(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 22,
+              vertical: 14,
+            ),
+            decoration: BoxDecoration(
+              color: const Color(0xFFE50914).withValues(alpha: .78),
+              borderRadius: BorderRadius.circular(18),
+              border: Border.all(
+                color: Colors.white.withValues(alpha: .42),
+                width: 1.1,
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: const Color(0xFFE50914).withValues(alpha: .30),
+                  blurRadius: 22,
+                  spreadRadius: 1,
+                ),
+              ],
+            ),
+            child: const Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  'SEGUIR',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 11,
+                    fontWeight: FontWeight.w900,
+                    letterSpacing: 1.8,
+                  ),
+                ),
+                SizedBox(width: 10),
+                Icon(
+                  Icons.arrow_forward_rounded,
+                  color: Colors.white,
+                  size: 17,
+                ),
+              ],
             ),
           ),
-          const SizedBox(width: 8),
-          const Icon(Icons.arrow_forward_rounded, size: 16),
-        ],
+        ),
       ),
     );
   }
