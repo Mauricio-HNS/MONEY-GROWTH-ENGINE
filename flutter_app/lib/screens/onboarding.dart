@@ -15,10 +15,28 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   final PageController _controller = PageController();
   int _page = 0;
 
-  final _pages = const [
-    _OnboardingPage(icon: Icons.search_rounded, title: 'Find hidden money', text: 'Detect wasted spending, forgotten opportunities and financial leaks.'),
-    _OnboardingPage(icon: Icons.psychology_alt_rounded, title: 'Build your money team', text: 'Specialized financial agents help you recover, earn, reduce debt and grow.'),
-    _OnboardingPage(icon: Icons.auto_graph_rounded, title: 'Turn insight into action', text: 'Create a clear financial plan and track the opportunities that matter.'),
+  static const _pages = <_OnboardingData>[
+    _OnboardingData(
+      number: '01',
+      title: 'TAKE CONTROL.',
+      text:
+          'See exactly where your money comes from, where it goes, and what is slowing your progress.',
+      icon: Icons.account_balance_wallet_rounded,
+    ),
+    _OnboardingData(
+      number: '02',
+      title: 'GET CLARITY.',
+      text:
+          'Organize income, expenses, debt, assets and investments in one financial command center.',
+      icon: Icons.insights_rounded,
+    ),
+    _OnboardingData(
+      number: '03',
+      title: 'CREATE GROWTH.',
+      text:
+          'Turn your numbers into decisions, priorities and concrete actions for the next stage.',
+      icon: Icons.auto_graph_rounded,
+    ),
   ];
 
   @override
@@ -27,39 +45,120 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     super.dispose();
   }
 
+  void _continue() {
+    if (_page < _pages.length - 1) {
+      _controller.nextPage(
+        duration: const Duration(milliseconds: 420),
+        curve: Curves.easeOutCubic,
+      );
+      return;
+    }
+    Navigator.pushReplacementNamed(context, AppRoutes.register);
+  }
+
   @override
   Widget build(BuildContext context) {
     final last = _page == _pages.length - 1;
+
     return Scaffold(
-      backgroundColor: AppColors.darkKnight,
+      backgroundColor: AppColors.black,
       body: SafeArea(
         child: Column(
           children: [
-            Align(alignment: Alignment.topRight, child: TextButton(onPressed: () => Navigator.pushReplacementNamed(context, AppRoutes.login), child: const Text('Skip'))),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(22, 14, 22, 0),
+              child: Row(
+                children: [
+                  const BrandMark(size: 46, borderRadius: 14),
+                  const SizedBox(width: 12),
+                  const Expanded(
+                    child: Text(
+                      BrandAssets.appName,
+                      style: TextStyle(
+                        color: AppColors.white,
+                        fontSize: 10,
+                        fontWeight: FontWeight.w900,
+                        letterSpacing: 1.8,
+                      ),
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () => Navigator.pushReplacementNamed(
+                      context,
+                      AppRoutes.login,
+                    ),
+                    child: const Text(
+                      'ENTRAR',
+                      style: TextStyle(
+                        fontSize: 10,
+                        fontWeight: FontWeight.w900,
+                        letterSpacing: 1.4,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
             Expanded(
               child: PageView.builder(
                 controller: _controller,
                 itemCount: _pages.length,
                 onPageChanged: (value) => setState(() => _page = value),
-                itemBuilder: (_, index) => _pages[index],
+                itemBuilder: (_, index) => _OnboardingPage(
+                  data: _pages[index],
+                  active: index == _page,
+                ),
               ),
             ),
-            Row(mainAxisAlignment: MainAxisAlignment.center, children: List.generate(_pages.length, (i) => AnimatedContainer(duration: const Duration(milliseconds: 200), margin: const EdgeInsets.symmetric(horizontal: 4), width: i == _page ? 26 : 7, height: 7, decoration: BoxDecoration(color: i == _page ? AppColors.laguna : AppColors.border, borderRadius: BorderRadius.circular(10))))),
             Padding(
-              padding: const EdgeInsets.fromLTRB(24, 26, 24, 24),
-              child: SizedBox(
-                width: double.infinity,
-                height: 54,
-                child: FilledButton(
-                  onPressed: () {
-                    if (last) {
-                      Navigator.pushReplacementNamed(context, AppRoutes.login);
-                    } else {
-                      _controller.nextPage(duration: const Duration(milliseconds: 280), curve: Curves.easeOut);
-                    }
-                  },
-                  child: Text(last ? 'Get started' : 'Continue'),
-                ),
+              padding: const EdgeInsets.fromLTRB(22, 0, 22, 24),
+              child: Column(
+                children: [
+                  Row(
+                    children: List.generate(
+                      _pages.length,
+                      (index) => Expanded(
+                        child: AnimatedContainer(
+                          duration: const Duration(milliseconds: 260),
+                          height: 5,
+                          margin: EdgeInsets.only(
+                            right: index == _pages.length - 1 ? 0 : 6,
+                          ),
+                          decoration: BoxDecoration(
+                            color: index == _page
+                                ? AppColors.red
+                                : AppColors.border,
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 18),
+                  SizedBox(
+                    width: double.infinity,
+                    height: 56,
+                    child: FilledButton(
+                      onPressed: _continue,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(last ? 'CRIAR MINHA CONTA' : 'CONTINUAR'),
+                          const SizedBox(width: 10),
+                          const Icon(Icons.arrow_forward_rounded, size: 18),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  TextButton(
+                    onPressed: () => Navigator.pushReplacementNamed(
+                      context,
+                      AppRoutes.login,
+                    ),
+                    child: const Text('Já tenho uma conta'),
+                  ),
+                ],
               ),
             ),
           ],
@@ -69,63 +168,153 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   }
 }
 
-class _OnboardingPage extends StatelessWidget {
-  const _OnboardingPage({required this.icon, required this.title, required this.text});
-  final IconData icon;
+class _OnboardingData {
+  const _OnboardingData({
+    required this.number,
+    required this.title,
+    required this.text,
+    required this.icon,
+  });
+
+  final String number;
   final String title;
   final String text;
+  final IconData icon;
+}
+
+class _OnboardingPage extends StatelessWidget {
+  const _OnboardingPage({
+    required this.data,
+    required this.active,
+  });
+
+  final _OnboardingData data;
+  final bool active;
 
   @override
-  Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 32),
+  Widget build(BuildContext context) {
+    return AnimatedOpacity(
+      duration: const Duration(milliseconds: 250),
+      opacity: active ? 1 : .78,
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(24, 18, 24, 8),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              width: 220,
-              height: 150,
-              decoration: BoxDecoration(
-                color: AppColors.surface,
-                borderRadius: BorderRadius.circular(28),
-                border: Border.all(color: AppColors.border),
-              ),
-              clipBehavior: Clip.antiAlias,
-              child: Stack(
-                fit: StackFit.expand,
-                children: [
-                  const BrandImage(fit: BoxFit.cover, opacity: .82),
-                  Align(
-                    alignment: Alignment.bottomRight,
-                    child: Container(
-                      width: 62,
-                      height: 62,
-                      margin: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: AppColors.darkKnight.withValues(alpha: .92),
-                        borderRadius: BorderRadius.circular(18),
-                      ),
-                      child: Icon(icon, size: 30, color: AppColors.laguna),
-                    ),
+            Stack(
+              children: [
+                Container(
+                  width: double.infinity,
+                  height: 270,
+                  decoration: BoxDecoration(
+                    color: AppColors.surface,
+                    borderRadius: BorderRadius.circular(30),
+                    border: Border.all(color: AppColors.border),
                   ),
-                ],
-              ),
+                  clipBehavior: Clip.antiAlias,
+                  child: Stack(
+                    fit: StackFit.expand,
+                    children: [
+                      const BrandImage(
+                        fit: BoxFit.cover,
+                        opacity: .24,
+                      ),
+                      DecoratedBox(
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                            colors: [
+                              AppColors.red.withValues(alpha: .72),
+                              AppColors.black.withValues(alpha: .88),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        left: 24,
+                        top: 24,
+                        child: Text(
+                          data.number,
+                          style: const TextStyle(
+                            color: AppColors.white,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w900,
+                            letterSpacing: 2.5,
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        right: 24,
+                        bottom: 24,
+                        child: Container(
+                          width: 82,
+                          height: 82,
+                          decoration: BoxDecoration(
+                            color: Colors.white.withValues(alpha: .10),
+                            borderRadius: BorderRadius.circular(24),
+                            border: Border.all(
+                              color: Colors.white.withValues(alpha: .22),
+                            ),
+                          ),
+                          child: Icon(
+                            data.icon,
+                            color: Colors.white,
+                            size: 40,
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        left: 24,
+                        bottom: 28,
+                        child: Container(
+                          width: 7,
+                          height: 74,
+                          decoration: BoxDecoration(
+                            color: AppColors.red,
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(height: 34),
+            const SizedBox(height: 28),
             const Text(
-              BrandAssets.appName,
-              textAlign: TextAlign.center,
+              'YOUR FINANCIAL COMMAND CENTER',
               style: TextStyle(
-                color: AppColors.coldBlue,
-                fontSize: 11,
+                color: AppColors.red,
+                fontSize: 10,
                 fontWeight: FontWeight.w900,
-                letterSpacing: 2.2,
+                letterSpacing: 2.1,
               ),
             ),
-            const SizedBox(height: 12),
-            Text(title, textAlign: TextAlign.center, style: const TextStyle(color: AppColors.white, fontSize: 29, fontWeight: FontWeight.w900)),
-            const SizedBox(height: 16),
-            Text(text, textAlign: TextAlign.center, style: const TextStyle(color: AppColors.textMuted, fontSize: 15, height: 1.5)),
+            const SizedBox(height: 10),
+            Text(
+              data.title,
+              style: const TextStyle(
+                color: AppColors.white,
+                fontSize: 34,
+                height: .94,
+                fontWeight: FontWeight.w900,
+                letterSpacing: -1.8,
+              ),
+            ),
+            const SizedBox(height: 14),
+            Text(
+              data.text,
+              style: const TextStyle(
+                color: AppColors.textMuted,
+                fontSize: 15,
+                height: 1.5,
+              ),
+            ),
           ],
         ),
-      );
+      ),
+    );
+  }
 }
