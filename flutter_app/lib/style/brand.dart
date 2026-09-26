@@ -58,17 +58,12 @@ class BrandMark extends StatelessWidget {
   final double borderRadius;
 
   @override
-  Widget build(BuildContext context) => Container(
+  Widget build(BuildContext context) => SizedBox(
         width: size,
         height: size,
-        decoration: BoxDecoration(
-          color: const Color(0xFF171717),
+        child: ClipRRect(
           borderRadius: BorderRadius.circular(borderRadius),
-          border: Border.all(
-            color: Colors.white.withValues(alpha: .18),
-          ),
+          child: const BrandImage(fit: BoxFit.contain),
         ),
-        clipBehavior: Clip.antiAlias,
-        child: const BrandImage(fit: BoxFit.cover),
       );
 }
