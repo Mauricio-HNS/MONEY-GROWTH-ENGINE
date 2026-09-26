@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../routes.dart';
 import '../style/app_style.dart';
+import '../style/brand.dart';
 
 class ScreenShell extends StatelessWidget {
   const ScreenShell({required this.title, required this.child, super.key});
@@ -13,6 +14,11 @@ class ScreenShell extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leadingWidth: 64,
+        leading: const Padding(
+          padding: EdgeInsets.only(left: 12),
+          child: BrandMark(size: 42, borderRadius: 12),
+        ),
         title: Text(title),
         actions: [
           IconButton(
