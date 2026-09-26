@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../style/app_style.dart';
-import '../style/brand.dart';
 import 'screen_shell.dart';
 
 class ForgotPasswordScreen extends StatelessWidget {
@@ -10,8 +9,7 @@ class ForgotPasswordScreen extends StatelessWidget {
   Widget build(BuildContext context) => ScreenShell(
     title: 'Reset password',
     child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      const BrandMark(size: 68, borderRadius: 20),
-      const SizedBox(height: 22),
+      const SizedBox(height: 8),
       const Text('GET BACK', style: TextStyle(color: AppColors.textMuted, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2.8)),
       const Text('IN CONTROL.', style: TextStyle(color: AppColors.white, fontSize: 39, fontWeight: FontWeight.w900, height: .92, letterSpacing: -2)),
       const SizedBox(height: 14),
