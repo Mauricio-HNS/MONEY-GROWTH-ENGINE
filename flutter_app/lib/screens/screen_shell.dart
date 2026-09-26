@@ -127,12 +127,14 @@ class AppIconBadge extends StatelessWidget {
     required this.icon,
     this.size = 40,
     this.radius = 12,
+    this.color = AppColors.white,
     super.key,
   });
 
   final IconData icon;
   final double size;
   final double radius;
+  final Color color;
 
   @override
   Widget build(BuildContext context) => Container(
@@ -150,6 +152,6 @@ class AppIconBadge extends StatelessWidget {
       ],
     ),
     alignment: Alignment.center,
-    child: Icon(icon, color: AppColors.white, size: size * .48),
+    child: Icon(icon, color: color, size: size * .48),
   );
 }
