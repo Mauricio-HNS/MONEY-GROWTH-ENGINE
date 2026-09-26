@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 
 import '../routes.dart';
@@ -18,7 +20,7 @@ class ScreenShell extends StatelessWidget {
         leading: const Padding(padding: EdgeInsets.only(left: 14), child: BrandMark(size: 42, borderRadius: 13)),
         title: Text(title.toUpperCase()),
         actions: [
-          IconButton(tooltip: 'Opportunity Radar', onPressed: () => Navigator.pushNamed(context, AppRoutes.radar), icon: const Icon(Icons.radar_rounded, color: AppColors.white)),
+          IconButton(tooltip: 'Opportunity Radar', onPressed: () => Navigator.pushNamed(context, AppRoutes.radar), icon: const AppIconBadge(icon: Icons.radar_rounded, size: 34)),
           const SizedBox(width: 6),
         ],
       ),
@@ -75,20 +77,39 @@ class SectionCard extends StatelessWidget {
   final Widget child;
 
   @override
-  Widget build(BuildContext context) => Container(
-    width: double.infinity,
-    padding: const EdgeInsets.all(18),
-    decoration: BoxDecoration(
-      color: AppColors.surface.withValues(alpha: .92),
-      borderRadius: BorderRadius.circular(22),
-      border: Border.all(color: AppColors.border),
-      boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: .22), blurRadius: 24, offset: const Offset(0, 12))],
+  Widget build(BuildContext context) => ClipRRect(
+    borderRadius: BorderRadius.circular(22),
+    child: BackdropFilter(
+      filter: ImageFilter.blur(sigmaX: 14, sigmaY: 14),
+      child: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.all(18),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              AppColors.surface.withValues(alpha: .78),
+              AppColors.surfaceSoft.withValues(alpha: .56),
+            ],
+          ),
+          borderRadius: BorderRadius.circular(22),
+          border: Border.all(color: Colors.white.withValues(alpha: .10)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: .24),
+              blurRadius: 24,
+              offset: const Offset(0, 12),
+            ),
+          ],
+        ),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Text(title.toUpperCase(), style: Theme.of(context).textTheme.titleLarge),
+          const SizedBox(height: 14),
+          child,
+        ]),
+      ),
     ),
-    child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      Text(title.toUpperCase(), style: Theme.of(context).textTheme.titleLarge),
-      const SizedBox(height: 14),
-      child,
-    ]),
   );
 }
 
@@ -98,4 +119,37 @@ class AgentActionButton extends StatelessWidget {
   final VoidCallback onPressed;
   @override
   Widget build(BuildContext context) => FilledButton.icon(onPressed: onPressed, icon: const Icon(Icons.arrow_forward_rounded, size: 17), label: Text(label));
+}
+
+
+class AppIconBadge extends StatelessWidget {
+  const AppIconBadge({
+    required this.icon,
+    this.size = 40,
+    this.radius = 12,
+    super.key,
+  });
+
+  final IconData icon;
+  final double size;
+  final double radius;
+
+  @override
+  Widget build(BuildContext context) => Container(
+    width: size,
+    height: size,
+    decoration: BoxDecoration(
+      color: AppColors.red,
+      borderRadius: BorderRadius.circular(radius),
+      boxShadow: [
+        BoxShadow(
+          color: AppColors.red.withValues(alpha: .20),
+          blurRadius: 12,
+          offset: const Offset(0, 5),
+        ),
+      ],
+    ),
+    alignment: Alignment.center,
+    child: Icon(icon, color: AppColors.white, size: size * .48),
+  );
 }
