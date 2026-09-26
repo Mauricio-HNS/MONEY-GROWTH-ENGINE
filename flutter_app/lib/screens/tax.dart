@@ -22,7 +22,7 @@ class _TaxScreenState extends State<TaxScreen> {
     SectionCard(title: 'Tax Optimizer', child: Text('Track legal deductions, credits, refunds and planning opportunities.', style: TextStyle(color: AppColors.textMuted))),
     const SizedBox(height: 14),
     SectionCard(title: 'Add opportunity', child: Column(children: [
-      TextField(controller: name, decoration: const InputDecoration(labelText: 'Opportunity', prefixIcon: Icon(Icons.receipt_long_outlined))),
+      TextField(controller: name, decoration: const InputDecoration(labelText: 'Opportunity', prefixIcon: AppIconBadge(icon: Icons.receipt_long_outlined))),
       const SizedBox(height: 10),
       TextField(controller: amount, keyboardType: const TextInputType.numberWithOptions(decimal: true), decoration: const InputDecoration(labelText: 'Estimated value', prefixText: '€ ')),
       const SizedBox(height: 12),
