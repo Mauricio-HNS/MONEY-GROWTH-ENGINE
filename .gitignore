@@ -1,0 +1,16 @@
+# Flutter local/generated files
+flutter_app/.dart_tool/
+flutter_app/build/
+flutter_app/.idea/
+flutter_app/*.iml
+flutter_app/.metadata
+flutter_app/pubspec.lock
+flutter_app/ios/
+flutter_app/android/.gradle/
+flutter_app/android/local.properties/
+flutter_app/macos/Flutter/ephemeral/
+flutter_app/web/flutter_service_worker.js
+
+# Local development automation
+.mge-flutter-input
+.DS_Store
