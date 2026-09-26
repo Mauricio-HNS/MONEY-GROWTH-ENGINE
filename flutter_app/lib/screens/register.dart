@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+
 import '../routes.dart';
 import '../style/app_style.dart';
 import 'screen_shell.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
-  @override State<RegisterScreen> createState() => _RegisterScreenState();
+
+  @override
+  State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
@@ -14,6 +17,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final email = TextEditingController();
   final password = TextEditingController();
   final confirmPassword = TextEditingController();
+
   bool obscurePassword = true;
   bool obscureConfirm = true;
 
@@ -33,170 +37,162 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   @override
-  Widget build(BuildContext context) => ScreenShell(
-    title: 'Create account',
-    showRadar: false,
-    child: Form(
-      key: formKey,
-      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        const SizedBox(height: 8),
-        const Text('BUILD YOUR', style: TextStyle(color: AppColors.textMuted, fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 2.8)),
-        const Text('MONEY TEAM.', style: TextStyle(color: AppColors.white, fontSize: 39, fontWeight: FontWeight.w900, height: .92, letterSpacing: -2)),
-        const SizedBox(height: 14),
-        const Text('Create your account first. Then we will build your financial baseline together.', style: TextStyle(color: AppColors.textMuted, fontSize: 14, height: 1.5)),
-        const SizedBox(height: 26),
-        _field('Your name', name, Icons.person_outline, validator: (value) => value == null || value.trim().length < 2 ? 'Enter your name' : null),
-        const SizedBox(height: 12),
-        TextFormField(
-          controller: email,
-          keyboardType: TextInputType.emailAddress,
-          autocorrect: false,
-          enableSuggestions: false,
-          textCapitalization: TextCapitalization.none,
-          textInputAction: TextInputAction.next,
-          validator: (value) {
-            final text = value?.trim() ?? '';
-            return RegExp(r'^[^@\\s]+@[^@\\s]+\\.[^@\\s]+
-        const SizedBox(height: 12),
-        _passwordField('Password', password, obscurePassword, () => setState(() => obscurePassword = !obscurePassword), validator: (value) => (value ?? '').length < 8 ? 'Use at least 8 characters' : null),
-        const SizedBox(height: 12),
-        _passwordField('Confirm password', confirmPassword, obscureConfirm, () => setState(() => obscureConfirm = !obscureConfirm), validator: (value) => value != password.text ? 'Passwords do not match' : null),
-        const SizedBox(height: 14),
-        const Text('8+ characters. Use a unique password for your account.', style: TextStyle(color: AppColors.textMuted, fontSize: 11)),
-        const SizedBox(height: 22),
-        SizedBox(width: double.infinity, child: FilledButton.icon(onPressed: submit, icon: const Icon(Icons.arrow_forward_rounded), label: const Text('CREATE ACCOUNT'))),
-        const SizedBox(height: 10),
-        Center(child: TextButton(onPressed: () => Navigator.pop(context), child: const Text('Already have an account? Sign in'))),
-      ]),
-    ),
-  );
-
-  Widget _field(
-    String label,
-    TextEditingController controller,
-    IconData icon, {
-    TextInputType? keyboardType,
-    String? Function(String?)? validator,
-  }) =>
-      TextFormField(
-        controller: controller,
-        keyboardType: keyboardType,
-        validator: validator,
-        style: const TextStyle(
-          color: AppColors.white,
-          fontSize: 16,
-          height: 1.2,
-        ),
-        cursorColor: AppColors.red,
-        textCapitalization: label == 'Email'
-            ? TextCapitalization.none
-            : TextCapitalization.words,
-        autocorrect: label != 'Email',
-        enableSuggestions: label != 'Email',
-        textInputAction: TextInputAction.next,
-        decoration: InputDecoration(
-          labelText: label,
-          prefixIcon: AppIconBadge(icon: icon),
-          contentPadding: const EdgeInsets.symmetric(
-            horizontal: 16,
-            vertical: 16,
-          ),
-        ),
-      );
-
-  Widget _passwordField(
-    String label,
-    TextEditingController controller,
-    bool obscure,
-    VoidCallback toggle, {
-    String? Function(String?)? validator,
-  }) =>
-      TextFormField(
-        controller: controller,
-        obscureText: obscure,
-        validator: validator,
-        style: const TextStyle(
-          color: AppColors.white,
-          fontSize: 16,
-          height: 1.2,
-        ),
-        cursorColor: AppColors.red,
-        textInputAction: TextInputAction.next,
-        decoration: InputDecoration(
-          labelText: label,
-          prefixIcon: const AppIconBadge(icon: Icons.lock_outline),
-          suffixIcon: IconButton(
-            onPressed: toggle,
-            icon: Icon(
-              obscure
-                  ? Icons.visibility_outlined
-                  : Icons.visibility_off_outlined,
+  Widget build(BuildContext context) {
+    return ScreenShell(
+      title: 'Create account',
+      showRadar: false,
+      child: Form(
+        key: formKey,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 8),
+            const Text(
+              'BUILD YOUR',
+              style: TextStyle(
+                color: AppColors.textMuted,
+                fontSize: 11,
+                fontWeight: FontWeight.w900,
+                letterSpacing: 2.8,
+              ),
             ),
-          ),
-          contentPadding: const EdgeInsets.symmetric(
-            horizontal: 16,
-            vertical: 16,
-          ),
-        ),
-      );
-}
-).hasMatch(text)
-                ? null
-                : 'Enter a valid email';
-          },
-          style: const TextStyle(
-            color: AppColors.white,
-            fontSize: 16,
-            height: 1.2,
-          ),
-          cursorColor: AppColors.red,
-          decoration: InputDecoration(
-            labelText: 'Email',
-            prefixIcon: const AppIconBadge(icon: Icons.email_outlined),
-            suffixIcon: IconButton(
-              tooltip: 'Insert @',
-              onPressed: () {
-                final text = email.text;
-                final selection = email.selection;
-                final position = selection.isValid
-                    ? selection.baseOffset
-                    : text.length;
-                final safePosition = position.clamp(0, text.length);
-                email.value = TextEditingValue(
-                  text: text.substring(0, safePosition) +
-                      '@' +
-                      text.substring(safePosition),
-                  selection: TextSelection.collapsed(offset: safePosition + 1),
-                );
+            const Text(
+              'MONEY TEAM.',
+              style: TextStyle(
+                color: AppColors.white,
+                fontSize: 39,
+                fontWeight: FontWeight.w900,
+                height: .92,
+                letterSpacing: -2,
+              ),
+            ),
+            const SizedBox(height: 14),
+            const Text(
+              'Create your account first. Then we will build your financial baseline together.',
+              style: TextStyle(
+                color: AppColors.textMuted,
+                fontSize: 14,
+                height: 1.5,
+              ),
+            ),
+            const SizedBox(height: 26),
+            _field(
+              'Your name',
+              name,
+              Icons.person_outline,
+              validator: (value) => value == null || value.trim().length < 2
+                  ? 'Enter your name'
+                  : null,
+            ),
+            const SizedBox(height: 12),
+            TextFormField(
+              controller: email,
+              keyboardType: TextInputType.emailAddress,
+              autocorrect: false,
+              enableSuggestions: false,
+              textCapitalization: TextCapitalization.none,
+              textInputAction: TextInputAction.next,
+              validator: (value) {
+                final text = value?.trim() ?? '';
+                return RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$').hasMatch(text)
+                    ? null
+                    : 'Enter a valid email';
               },
-              icon: const Text(
-                '@',
-                style: TextStyle(
-                  color: AppColors.white,
-                  fontSize: 22,
-                  fontWeight: FontWeight.w800,
+              style: const TextStyle(
+                color: AppColors.white,
+                fontSize: 16,
+                height: 1.2,
+              ),
+              cursorColor: AppColors.red,
+              decoration: InputDecoration(
+                labelText: 'Email',
+                prefixIcon: const AppIconBadge(icon: Icons.email_outlined),
+                suffixIcon: IconButton(
+                  tooltip: 'Insert @',
+                  onPressed: () {
+                    final text = email.text;
+                    final selection = email.selection;
+                    final position =
+                        selection.isValid ? selection.baseOffset : text.length;
+                    final safePosition = position.clamp(0, text.length);
+
+                    email.value = TextEditingValue(
+                      text: text.substring(0, safePosition) +
+                          '@' +
+                          text.substring(safePosition),
+                      selection: TextSelection.collapsed(
+                        offset: safePosition + 1,
+                      ),
+                    );
+                  },
+                  icon: const Text(
+                    '@',
+                    style: TextStyle(
+                      color: AppColors.white,
+                      fontSize: 22,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+                ),
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 16,
                 ),
               ),
             ),
-            contentPadding: const EdgeInsets.symmetric(
-              horizontal: 16,
-              vertical: 16,
+            const SizedBox(height: 12),
+            _passwordField(
+              'Password',
+              password,
+              obscurePassword,
+              () => setState(
+                () => obscurePassword = !obscurePassword,
+              ),
+              validator: (value) => (value ?? '').length < 8
+                  ? 'Use at least 8 characters'
+                  : null,
             ),
-          ),
+            const SizedBox(height: 12),
+            _passwordField(
+              'Confirm password',
+              confirmPassword,
+              obscureConfirm,
+              () => setState(
+                () => obscureConfirm = !obscureConfirm,
+              ),
+              validator: (value) => value != password.text
+                  ? 'Passwords do not match'
+                  : null,
+            ),
+            const SizedBox(height: 14),
+            const Text(
+              '8+ characters. Use a unique password for your account.',
+              style: TextStyle(
+                color: AppColors.textMuted,
+                fontSize: 11,
+              ),
+            ),
+            const SizedBox(height: 22),
+            SizedBox(
+              width: double.infinity,
+              child: FilledButton.icon(
+                onPressed: submit,
+                icon: const Icon(Icons.arrow_forward_rounded),
+                label: const Text('CREATE ACCOUNT'),
+              ),
+            ),
+            const SizedBox(height: 10),
+            Center(
+              child: TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('Already have an account? Sign in'),
+              ),
+            ),
+          ],
         ),
-        const SizedBox(height: 12),
-        _passwordField('Password', password, obscurePassword, () => setState(() => obscurePassword = !obscurePassword), validator: (value) => (value ?? '').length < 8 ? 'Use at least 8 characters' : null),
-        const SizedBox(height: 12),
-        _passwordField('Confirm password', confirmPassword, obscureConfirm, () => setState(() => obscureConfirm = !obscureConfirm), validator: (value) => value != password.text ? 'Passwords do not match' : null),
-        const SizedBox(height: 14),
-        const Text('8+ characters. Use a unique password for your account.', style: TextStyle(color: AppColors.textMuted, fontSize: 11)),
-        const SizedBox(height: 22),
-        SizedBox(width: double.infinity, child: FilledButton.icon(onPressed: submit, icon: const Icon(Icons.arrow_forward_rounded), label: const Text('CREATE ACCOUNT'))),
-        const SizedBox(height: 10),
-        Center(child: TextButton(onPressed: () => Navigator.pop(context), child: const Text('Already have an account? Sign in'))),
-      ]),
-    ),
-  );
+      ),
+    );
+  }
 
   Widget _field(
     String label,
@@ -204,32 +200,33 @@ class _RegisterScreenState extends State<RegisterScreen> {
     IconData icon, {
     TextInputType? keyboardType,
     String? Function(String?)? validator,
-  }) =>
-      TextFormField(
-        controller: controller,
-        keyboardType: keyboardType,
-        validator: validator,
-        style: const TextStyle(
-          color: AppColors.white,
-          fontSize: 16,
-          height: 1.2,
+  }) {
+    return TextFormField(
+      controller: controller,
+      keyboardType: keyboardType,
+      validator: validator,
+      style: const TextStyle(
+        color: AppColors.white,
+        fontSize: 16,
+        height: 1.2,
+      ),
+      cursorColor: AppColors.red,
+      textCapitalization: label == 'Email'
+          ? TextCapitalization.none
+          : TextCapitalization.words,
+      autocorrect: label != 'Email',
+      enableSuggestions: label != 'Email',
+      textInputAction: TextInputAction.next,
+      decoration: InputDecoration(
+        labelText: label,
+        prefixIcon: AppIconBadge(icon: icon),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 16,
         ),
-        cursorColor: AppColors.red,
-        textCapitalization: label == 'Email'
-            ? TextCapitalization.none
-            : TextCapitalization.words,
-        autocorrect: label != 'Email',
-        enableSuggestions: label != 'Email',
-        textInputAction: TextInputAction.next,
-        decoration: InputDecoration(
-          labelText: label,
-          prefixIcon: AppIconBadge(icon: icon),
-          contentPadding: const EdgeInsets.symmetric(
-            horizontal: 16,
-            vertical: 16,
-          ),
-        ),
-      );
+      ),
+    );
+  }
 
   Widget _passwordField(
     String label,
@@ -237,33 +234,34 @@ class _RegisterScreenState extends State<RegisterScreen> {
     bool obscure,
     VoidCallback toggle, {
     String? Function(String?)? validator,
-  }) =>
-      TextFormField(
-        controller: controller,
-        obscureText: obscure,
-        validator: validator,
-        style: const TextStyle(
-          color: AppColors.white,
-          fontSize: 16,
-          height: 1.2,
-        ),
-        cursorColor: AppColors.red,
-        textInputAction: TextInputAction.next,
-        decoration: InputDecoration(
-          labelText: label,
-          prefixIcon: const AppIconBadge(icon: Icons.lock_outline),
-          suffixIcon: IconButton(
-            onPressed: toggle,
-            icon: Icon(
-              obscure
-                  ? Icons.visibility_outlined
-                  : Icons.visibility_off_outlined,
-            ),
-          ),
-          contentPadding: const EdgeInsets.symmetric(
-            horizontal: 16,
-            vertical: 16,
+  }) {
+    return TextFormField(
+      controller: controller,
+      obscureText: obscure,
+      validator: validator,
+      style: const TextStyle(
+        color: AppColors.white,
+        fontSize: 16,
+        height: 1.2,
+      ),
+      cursorColor: AppColors.red,
+      textInputAction: TextInputAction.next,
+      decoration: InputDecoration(
+        labelText: label,
+        prefixIcon: const AppIconBadge(icon: Icons.lock_outline),
+        suffixIcon: IconButton(
+          onPressed: toggle,
+          icon: Icon(
+            obscure
+                ? Icons.visibility_outlined
+                : Icons.visibility_off_outlined,
           ),
         ),
-      );
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 16,
+        ),
+      ),
+    );
+  }
 }
