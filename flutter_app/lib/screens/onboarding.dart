@@ -163,7 +163,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 ],
               ),
             ),
-          ],
+                  ],
+                ),
+              ),
+            );
+          },
         ),
       ),
     );
@@ -200,9 +204,18 @@ class _OnboardingPage extends StatelessWidget {
       opacity: active ? 1 : .78,
       child: Padding(
         padding: const EdgeInsets.fromLTRB(24, 18, 24, 8),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final contentHeight = constraints.maxHeight.isFinite
+                ? constraints.maxHeight
+                : MediaQuery.sizeOf(context).height * .62;
+            return SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
+              child: ConstrainedBox(
+                constraints: BoxConstraints(minHeight: contentHeight),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Stack(
               children: [
