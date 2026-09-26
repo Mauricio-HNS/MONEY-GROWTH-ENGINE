@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import '../routes.dart';
 import '../style/app_style.dart';
-import '../style/brand.dart';
 import 'screen_shell.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -34,12 +33,7 @@ class _LoginScreenState extends State<LoginScreen> {
     child: Form(
       key: formKey,
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Row(children: [
-          const BrandMark(size: 54, borderRadius: 16),
-          const SizedBox(width: 14),
-          const Expanded(child: Text(BrandAssets.appName, style: TextStyle(color: AppColors.white, fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 1.5))),
-        ]),
-        const SizedBox(height: 24),
+        const SizedBox(height: 8),
         const Text('CONTROL YOUR MONEY.', style: TextStyle(color: AppColors.white, fontSize: 31, fontWeight: FontWeight.w900, letterSpacing: -1.4)),
         const SizedBox(height: 8),
         const Text('Sign in to continue to your financial command center.', style: TextStyle(color: AppColors.textMuted, fontSize: 14, height: 1.5)),
