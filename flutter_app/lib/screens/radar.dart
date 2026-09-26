@@ -62,7 +62,7 @@ class _RadarScreenState extends State<RadarScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Icon(Icons.radar_rounded, color: AppColors.coldBlue, size: 38),
+                AppIconBadge(icon: Icons.radar_rounded, size: 38),
                 const SizedBox(height: 12),
                 const Text(
                   'Scan your financial life',
@@ -100,7 +100,7 @@ class _RadarScreenState extends State<RadarScreen> {
                     .map(
                       (signal) => ListTile(
                         contentPadding: EdgeInsets.zero,
-                        leading: const Icon(
+                        leading: AppIconBadge(icon: 
                           Icons.insights_outlined,
                           color: AppColors.coldBlue,
                         ),
