@@ -13,10 +13,16 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   final formKey = GlobalKey<FormState>();
+
   final name = TextEditingController();
   final email = TextEditingController();
   final password = TextEditingController();
   final confirmPassword = TextEditingController();
+
+  final nameFocus = FocusNode();
+  final emailFocus = FocusNode();
+  final passwordFocus = FocusNode();
+  final confirmPasswordFocus = FocusNode();
 
   bool obscurePassword = true;
   bool obscureConfirm = true;
@@ -27,13 +33,23 @@ class _RegisterScreenState extends State<RegisterScreen> {
     email.dispose();
     password.dispose();
     confirmPassword.dispose();
+    nameFocus.dispose();
+    emailFocus.dispose();
+    passwordFocus.dispose();
+    confirmPasswordFocus.dispose();
     super.dispose();
   }
 
   void submit() {
-    FocusScope.of(context).unfocus();
+    FocusManager.instance.primaryFocus?.unfocus();
     if (!formKey.currentState!.validate()) return;
     Navigator.pushReplacementNamed(context, AppRoutes.financialSetup);
+  }
+
+  void focus(FocusNode node) {
+    if (!node.hasFocus) {
+      node.requestFocus();
+    }
   }
 
   @override
@@ -41,182 +57,174 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return ScreenShell(
       title: 'Create account',
       showRadar: false,
-      child: Form(
-        key: formKey,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: 8),
-            const Text(
-              'BUILD YOUR',
-              style: TextStyle(
-                color: AppColors.textMuted,
-                fontSize: 11,
-                fontWeight: FontWeight.w900,
-                letterSpacing: 2.8,
-              ),
-            ),
-            const Text(
-              'MONEY TEAM.',
-              style: TextStyle(
-                color: AppColors.white,
-                fontSize: 39,
-                fontWeight: FontWeight.w900,
-                height: .92,
-                letterSpacing: -2,
-              ),
-            ),
-            const SizedBox(height: 14),
-            const Text(
-              'Create your account first. Then we will build your financial baseline together.',
-              style: TextStyle(
-                color: AppColors.textMuted,
-                fontSize: 14,
-                height: 1.5,
-              ),
-            ),
-            const SizedBox(height: 26),
-            _field(
-              'Your name',
-              name,
-              Icons.person_outline,
-              validator: (value) => value == null || value.trim().length < 2
-                  ? 'Enter your name'
-                  : null,
-            ),
-            const SizedBox(height: 12),
-            TextFormField(
-              controller: email,
-              keyboardType: TextInputType.emailAddress,
-              autocorrect: false,
-              enableSuggestions: false,
-              textCapitalization: TextCapitalization.none,
-              textInputAction: TextInputAction.next,
-              validator: (value) {
-                final text = value?.trim() ?? '';
-                return RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$').hasMatch(text)
-                    ? null
-                    : 'Enter a valid email';
-              },
-              style: const TextStyle(
-                color: AppColors.white,
-                fontSize: 16,
-                height: 1.2,
-              ),
-              cursorColor: AppColors.red,
-              decoration: InputDecoration(
-                labelText: 'Email',
-                prefixIcon: const AppIconBadge(icon: Icons.email_outlined),
-                suffixIcon: IconButton(
-                  tooltip: 'Insert @',
-                  onPressed: () {
-                    final text = email.text;
-                    final selection = email.selection;
-                    final position =
-                        selection.isValid ? selection.baseOffset : text.length;
-                    final safePosition = position.clamp(0, text.length);
-
-                    email.value = TextEditingValue(
-                      text: text.substring(0, safePosition) +
-                          '@' +
-                          text.substring(safePosition),
-                      selection: TextSelection.collapsed(
-                        offset: safePosition + 1,
-                      ),
-                    );
-                  },
-                  icon: const Text(
-                    '@',
-                    style: TextStyle(
-                      color: AppColors.white,
-                      fontSize: 22,
-                      fontWeight: FontWeight.w800,
-                    ),
-                  ),
-                ),
-                contentPadding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 16,
+      child: AutofillGroup(
+        child: Form(
+          key: formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 8),
+              const Text(
+                'BUILD YOUR',
+                style: TextStyle(
+                  color: AppColors.textMuted,
+                  fontSize: 11,
+                  fontWeight: FontWeight.w900,
+                  letterSpacing: 2.8,
                 ),
               ),
-            ),
-            const SizedBox(height: 12),
-            _passwordField(
-              'Password',
-              password,
-              obscurePassword,
-              () => setState(
-                () => obscurePassword = !obscurePassword,
+              const Text(
+                'MONEY TEAM.',
+                style: TextStyle(
+                  color: AppColors.white,
+                  fontSize: 39,
+                  fontWeight: FontWeight.w900,
+                  height: .92,
+                  letterSpacing: -2,
+                ),
               ),
-              validator: (value) => (value ?? '').length < 8
-                  ? 'Use at least 8 characters'
-                  : null,
-            ),
-            const SizedBox(height: 12),
-            _passwordField(
-              'Confirm password',
-              confirmPassword,
-              obscureConfirm,
-              () => setState(
-                () => obscureConfirm = !obscureConfirm,
+              const SizedBox(height: 14),
+              const Text(
+                'Create your account first. Then we will build your financial baseline together.',
+                style: TextStyle(
+                  color: AppColors.textMuted,
+                  fontSize: 14,
+                  height: 1.5,
+                ),
               ),
-              validator: (value) => value != password.text
-                  ? 'Passwords do not match'
-                  : null,
-            ),
-            const SizedBox(height: 14),
-            const Text(
-              '8+ characters. Use a unique password for your account.',
-              style: TextStyle(
-                color: AppColors.textMuted,
-                fontSize: 11,
+              const SizedBox(height: 26),
+              _textField(
+                label: 'Your name',
+                controller: name,
+                focusNode: nameFocus,
+                icon: Icons.person_outline,
+                keyboardType: TextInputType.name,
+                textCapitalization: TextCapitalization.words,
+                autofillHints: const [AutofillHints.name],
+                textInputAction: TextInputAction.next,
+                validator: (value) {
+                  final text = value?.trim() ?? '';
+                  return text.length < 2 ? 'Enter your name' : null;
+                },
+                onSubmitted: (_) => focus(emailFocus),
               ),
-            ),
-            const SizedBox(height: 22),
-            SizedBox(
-              width: double.infinity,
-              child: FilledButton.icon(
-                onPressed: submit,
-                icon: const Icon(Icons.arrow_forward_rounded),
-                label: const Text('CREATE ACCOUNT'),
+              const SizedBox(height: 12),
+              _textField(
+                label: 'Email',
+                controller: email,
+                focusNode: emailFocus,
+                icon: Icons.email_outlined,
+                keyboardType: TextInputType.emailAddress,
+                textCapitalization: TextCapitalization.none,
+                autofillHints: const [AutofillHints.email],
+                textInputAction: TextInputAction.next,
+                validator: (value) {
+                  final text = value?.trim() ?? '';
+                  return RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$').hasMatch(text)
+                      ? null
+                      : 'Enter a valid email';
+                },
+                onSubmitted: (_) => focus(passwordFocus),
               ),
-            ),
-            const SizedBox(height: 10),
-            Center(
-              child: TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Text('Already have an account? Sign in'),
+              const SizedBox(height: 12),
+              _passwordField(
+                label: 'Password',
+                controller: password,
+                focusNode: passwordFocus,
+                obscure: obscurePassword,
+                autofillHints: const [AutofillHints.newPassword],
+                textInputAction: TextInputAction.next,
+                onSubmitted: (_) => focus(confirmPasswordFocus),
+                toggle: () => setState(
+                  () => obscurePassword = !obscurePassword,
+                ),
+                validator: (value) {
+                  return (value ?? '').length < 8
+                      ? 'Use at least 8 characters'
+                      : null;
+                },
               ),
-            ),
-          ],
+              const SizedBox(height: 12),
+              _passwordField(
+                label: 'Confirm password',
+                controller: confirmPassword,
+                focusNode: confirmPasswordFocus,
+                obscure: obscureConfirm,
+                autofillHints: const [AutofillHints.newPassword],
+                textInputAction: TextInputAction.done,
+                onSubmitted: (_) => submit(),
+                toggle: () => setState(
+                  () => obscureConfirm = !obscureConfirm,
+                ),
+                validator: (value) {
+                  return value != password.text
+                      ? 'Passwords do not match'
+                      : null;
+                },
+              ),
+              const SizedBox(height: 14),
+              const Text(
+                '8+ characters. Your name accepts accents and normal keyboard input.',
+                style: TextStyle(
+                  color: AppColors.textMuted,
+                  fontSize: 11,
+                ),
+              ),
+              const SizedBox(height: 22),
+              SizedBox(
+                width: double.infinity,
+                child: FilledButton.icon(
+                  onPressed: submit,
+                  icon: const Icon(Icons.arrow_forward_rounded),
+                  label: const Text('CREATE ACCOUNT'),
+                ),
+              ),
+              const SizedBox(height: 10),
+              Center(
+                child: TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: const Text('Already have an account? Sign in'),
+                ),
+              ),
+              const SizedBox(height: 12),
+            ],
+          ),
         ),
       ),
     );
   }
 
-  Widget _field(
-    String label,
-    TextEditingController controller,
-    IconData icon, {
-    TextInputType? keyboardType,
-    String? Function(String?)? validator,
+  Widget _textField({
+    required String label,
+    required TextEditingController controller,
+    required FocusNode focusNode,
+    required IconData icon,
+    required TextInputType keyboardType,
+    required TextCapitalization textCapitalization,
+    required Iterable<String> autofillHints,
+    required TextInputAction textInputAction,
+    required String? Function(String?) validator,
+    required ValueChanged<String> onSubmitted,
   }) {
     return TextFormField(
       controller: controller,
+      focusNode: focusNode,
       keyboardType: keyboardType,
+      textCapitalization: textCapitalization,
+      textInputAction: textInputAction,
+      autofillHints: autofillHints,
+      autocorrect: label != 'Email',
+      enableSuggestions: label != 'Email',
+      enableInteractiveSelection: true,
       validator: validator,
+      onTap: () => focus(focusNode),
+      onFieldSubmitted: onSubmitted,
       style: const TextStyle(
         color: AppColors.white,
         fontSize: 16,
         height: 1.2,
       ),
       cursorColor: AppColors.red,
-      textCapitalization: label == 'Email'
-          ? TextCapitalization.none
-          : TextCapitalization.words,
-      autocorrect: label != 'Email',
-      enableSuggestions: label != 'Email',
-      textInputAction: TextInputAction.next,
       decoration: InputDecoration(
         labelText: label,
         prefixIcon: AppIconBadge(icon: icon),
@@ -228,28 +236,41 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  Widget _passwordField(
-    String label,
-    TextEditingController controller,
-    bool obscure,
-    VoidCallback toggle, {
-    String? Function(String?)? validator,
+  Widget _passwordField({
+    required String label,
+    required TextEditingController controller,
+    required FocusNode focusNode,
+    required bool obscure,
+    required Iterable<String> autofillHints,
+    required TextInputAction textInputAction,
+    required ValueChanged<String> onSubmitted,
+    required VoidCallback toggle,
+    required String? Function(String?) validator,
   }) {
     return TextFormField(
       controller: controller,
+      focusNode: focusNode,
       obscureText: obscure,
+      keyboardType: TextInputType.visiblePassword,
+      textInputAction: textInputAction,
+      autofillHints: autofillHints,
+      autocorrect: false,
+      enableSuggestions: false,
+      enableInteractiveSelection: true,
       validator: validator,
+      onTap: () => focus(focusNode),
+      onFieldSubmitted: onSubmitted,
       style: const TextStyle(
         color: AppColors.white,
         fontSize: 16,
         height: 1.2,
       ),
       cursorColor: AppColors.red,
-      textInputAction: TextInputAction.next,
       decoration: InputDecoration(
         labelText: label,
         prefixIcon: const AppIconBadge(icon: Icons.lock_outline),
         suffixIcon: IconButton(
+          tooltip: obscure ? 'Show password' : 'Hide password',
           onPressed: toggle,
           icon: Icon(
             obscure
