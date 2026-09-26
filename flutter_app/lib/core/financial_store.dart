@@ -83,8 +83,8 @@ class FinancialStore extends ChangeNotifier {
     this.monthlyExpenses = monthlyExpenses;
     this.hasDebt = hasDebt;
     this.debtBalance = hasDebt ? debtBalance : 0;
-    this.setupInvestments = investments;
-    this.setupAssets = assets;
+    setupInvestments = investments;
+    setupAssets = assets;
     setupCompleted = true;
     notifyListeners();
   }
@@ -111,7 +111,7 @@ String money(double value, [String currency = 'EUR']) {
     'USD' => '\$',
     _ => '€',
   };
-  return symbol + ' ' + value.toStringAsFixed(0);
+  return '$symbol ${value.toStringAsFixed(0)}';
 }
 
 class Investment {
