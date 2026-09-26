@@ -37,8 +37,8 @@ class FinancialStore extends ChangeNotifier {
   double monthlyExpenses = 0;
   bool hasDebt = false;
   double debtBalance = 0;
-  double investments = 0;
-  double assets = 0;
+  double setupInvestments = 0;
+  double setupAssets = 0;
   bool setupCompleted = false;
 
   final List<Investment> investments = [];
@@ -65,7 +65,7 @@ class FinancialStore extends ChangeNotifier {
   double get totalDebt => debts.fold(0, (sum, item) => sum + item.balance);
   double get recurringExpenses => expenses.where((item) => item.category == 'Recurring').fold(0, (sum, item) => sum + item.amount);
   double get setupCashFlow => monthlyIncome - monthlyExpenses;
-  double get netWorth => assets + investments - debtBalance;
+  double get netWorth => setupAssets + setupInvestments - debtBalance;
 
   void completeSetup({
     required String currency,
@@ -83,8 +83,8 @@ class FinancialStore extends ChangeNotifier {
     this.monthlyExpenses = monthlyExpenses;
     this.hasDebt = hasDebt;
     this.debtBalance = hasDebt ? debtBalance : 0;
-    this.investments = investments;
-    this.assets = assets;
+    this.setupInvestments = investments;
+    this.setupAssets = assets;
     setupCompleted = true;
     notifyListeners();
   }
