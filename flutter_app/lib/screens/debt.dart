@@ -70,7 +70,7 @@ class _DebtScreenState extends State<DebtScreen> {
                         controller: title,
                         decoration: const InputDecoration(
                           labelText: 'Debt name',
-                          prefixIcon: Icon(Icons.credit_card_outlined),
+                          prefixIcon: AppIconBadge(icon: Icons.credit_card_outlined),
                         ),
                       ),
                       const SizedBox(height: 12),
@@ -119,7 +119,7 @@ class _DebtScreenState extends State<DebtScreen> {
                       ...store.debts.map(
                         (item) => ListTile(
                           contentPadding: EdgeInsets.zero,
-                          leading: const Icon(
+                          leading: AppIconBadge(icon: 
                             Icons.account_balance_wallet_outlined,
                             color: AppColors.coldBlue,
                           ),
