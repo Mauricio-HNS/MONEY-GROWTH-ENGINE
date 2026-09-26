@@ -200,11 +200,9 @@ class _OnboardingPage extends StatelessWidget {
       opacity: active ? 1 : .78,
       child: Padding(
         padding: const EdgeInsets.fromLTRB(24, 18, 24, 16),
-        child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
               _GlassHero(data: data),
               const SizedBox(height: 28),
               ClipRRect(
